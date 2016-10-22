@@ -45,6 +45,17 @@ var vista_pacientes =  function(req, res)
 
 };
 
+var AsignarEjercicio =  function(req, res)
+{
+	var user = req.user;
+	res.render("AsignarEjercicio", 
+	{
+		titulo 	:  	"AsignarEjercicio",
+		usuario	:	"Bienvenido " + user[0].nombre
+	});
+
+};
+
 
 
 
@@ -647,6 +658,7 @@ module.exports.validar_correo = validar_correo;
 
 
 module.exports.vista_pacientes = vista_pacientes;
+module.exports.AsignarEjercicio = AsignarEjercicio;
 
 
 

@@ -1,0 +1,28 @@
+doctype html
+html(lang='es')
+  head
+      meta(charset='UTF-8')
+      meta(name='google', value='notranslate')
+      meta(name='viewport', content='initial-scale=1, maximum-scale=1, user-scalable=no')
+      title!= titulo
+      link(rel='stylesheet', type='text/css', href='css/AsignarEjercicio.css')      
+  body
+    center
+      div
+        span.titulo Asignar Ejercicio
+        a(href='/atras')
+          img#atras.iconHeader(src='img/exit.png', border='0')
+          | atras
+        a(href='/logout')
+          img#logout.iconHeader(src='img/exit.png', border='0')
+        br
+        select#TipoEjercicio(name='TipoEjercicio')
+          option(value='0') Ejercicio
+          option(value='1') Estiramiento
+        input#TiempoEjercicio(name='TiempoEjercicio', type='number', min='0', placeholder='Tiempo en segundos')
+        input#RepeticionesEjercicio(name='RepeticionesEjercicio', min='0', type='number', placeholder='Numero de repeticiones')
+    br
+    #cajon1
+      input(type='search')
+      #lista
+    #cajon2

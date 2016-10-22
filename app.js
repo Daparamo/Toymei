@@ -104,20 +104,12 @@ var express 		= 	require("express"),
 
 	app.post("/validar_correo", rutas.validar_correo);
 
-	
-
-
-
-
-
-
 	//Mostrar vista registrar pacientes
 	app.get("/Mostrar_vista_pacientes", rutas.vista_pacientes);
 
-
 	app.post('/createRegistro123', rutas.createRegistro);
-
-
+	//Mostrar Vista AsignarEjercicio
+	app.get("/AsignarEjercicio", rutas.AsignarEjercicio);
 
 	//Traer todas los pacientes x medico
 	app.get('/traerPersonas', rutas.traerPersonas);
@@ -209,12 +201,6 @@ var express 		= 	require("express"),
 		}
 	});
 */
-
-
-
-
-
-
 
 	//Para cualquier url que no cumpla la condición...
 	app.get("*", rutas.notFound404);
