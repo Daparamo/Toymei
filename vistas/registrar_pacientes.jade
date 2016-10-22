@@ -18,9 +18,12 @@ html(lang='en')
     
     center
         span.titulo #{titulo}
-    #titulo #{usuario}
-    a(href='/logout')
-        img.iconHeader#logout(src='img/exit.png' border = "0")
+        #ButtonHeader
+            a(href='/')
+                  img#atras.iconHeader(src='img/Atras.png', border='0')
+            a(href='/logout')
+                img.iconHeader#logout(src='img/exit.png' border = "0")
+        #titulo #{usuario}
     hr
     br
     #cajon1

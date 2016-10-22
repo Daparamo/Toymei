@@ -74,10 +74,7 @@ function enviarCorreo (callback)
 
 
 function traerPersonas (callback)
- {
-        
-
-
+ {        
         $.ajax(
         {
             url         : "traerPersonas",
@@ -94,35 +91,19 @@ function traerPersonas (callback)
            console.log(listadoPersonas);
             
            imprimeUsuarios(listadoPersonas);
-         
-           
-            
-            
-
+  
         }).error(function(request, status, error)
         {
-            
-
             sweetAlert("Oops...", request.responseText, "error");
             //alert(request.responseText);
             window.location = "/";
         });
 
     }
-    
-    
-  
-
-
-    
-
 
     //Para guardar el nombre del usuario...
     var $nomUsuario = $("#titulo").html();
     var todos = [];
-    
-
-
 
     function updateRegistro (ind,callback) 
     {
@@ -133,11 +114,8 @@ function traerPersonas (callback)
         data.nacimiento = $("#fechanace").val();
         data.correo = $("#email").val();
         data.id = listadoPersonas[ind].id
-        
-
-
-       // console.log(data);
-       
+    
+       // console.log(data);    
         $.ajax(
         {
             url         : "updateUsuario",
@@ -149,20 +127,16 @@ function traerPersonas (callback)
         {
          //   console.log(data);
             callback(data);
-            
-            
 
         }).error(function(request, status, error)
-        {
-            
-
+        {            
             sweetAlert("Oops...", request.responseText, "error");
             //alert(request.responseText);
             window.location = "/";
         });
-
     }
 
+<<<<<<< HEAD
 
 
 
@@ -204,6 +178,8 @@ function traerPersonas (callback)
 
 
 
+=======
+>>>>>>> origin/master
     var eliminarRegistro = function(ind,callback)
     {
         var data = {};
@@ -218,26 +194,15 @@ function traerPersonas (callback)
             contentType: "application/json; charset=utf-8"
         }).done(function(data)
         {
-            callback(data);
-        
+            callback(data);        
         }).error(function(request, status, error)
-        {
-            
-
+        {            
             sweetAlert("Oops...", request.responseText, "error");
             //alert(request.responseText);
             window.location = "/";
         });
-
     }
 
-
-
-
-
-
-
-    
     var crearRegistro = function(callback)
     {
         var data = {};
@@ -246,10 +211,6 @@ function traerPersonas (callback)
         data.apellido = $("#apellido").val();
         data.nacimiento = $("#fechanace").val();
         data.correo = $("#email").val();
-
-
-
-
 
         $.ajax(
         {
@@ -261,23 +222,14 @@ function traerPersonas (callback)
         }).done(function(data)
         {
          //   console.log(data);
-            callback(data);
-            
-            
-
+            callback(data);            
         }).error(function(request, status, error)
-        {
-            
-
+        {            
             sweetAlert("Oops...", request.responseText, "error");
             //alert(request.responseText);
             window.location = "/";
         });
-
     }
-
-
-
 
     //Para listar los trabajos...
     var muestraTodos = function (tipo, index)
@@ -316,14 +268,7 @@ function traerPersonas (callback)
         }
     };
 
-
-
-    
-
-    
-
-
-var buscarIndice = function(id)
+    var buscarIndice = function(id)
     {
         var ind = -1;
         for(var i = 0; i < todos.length; i++)
@@ -337,11 +282,7 @@ var buscarIndice = function(id)
         return ind;
     };
 
-
-
-
-
-var imprimeUsuarios = (function imprimeUsuarios()
+    var imprimeUsuarios = (function imprimeUsuarios()
     {
         var txt = "<table class = 'table-fill'>" + 
                     "<thead><tr>" + 
@@ -361,7 +302,7 @@ var imprimeUsuarios = (function imprimeUsuarios()
            // console.log(datosPersona)
 
            
-                txt += "<td><center>"+ datosPersona.cedula+"</center></td>";
+                txt += "<td><center>"+datosPersona.cedula+"</center></td>";
                 txt += "<td><center>"+datosPersona.nombre +" "+ datosPersona.apellido+"</center></td>";
                 txt += "<td><center>"+datosPersona.correo+"</center></td>";
                 txt += "<td><center>"+datosPersona.nacimiento+"</center></td>";
@@ -380,28 +321,17 @@ var imprimeUsuarios = (function imprimeUsuarios()
         txt += "</tbody></table>";
         nom_div("imprime").innerHTML = txt;
 
-
-
         //Poner las acciones de editar y eliminar...
         for(var i = 0; i < listadoPersonas.length; i++)
-        {
-            
-
-
+        {        
             //Editar...
             nom_div("e_" + i).addEventListener('click', function(event)
             {
-
-
                 ind = event.target.id.split("_")[1];
-
-               // console.log(ind); //Posicion en la tabla
-
-
-
-               // var idUser = listadoPersonas[ind].cedula;
-               // console.log("Valor de idUser: ", idUser);
-              //  ind = buscaIndice(idUser);
+                // console.log(ind); //Posicion en la tabla
+                // var idUser = listadoPersonas[ind].cedula;
+                // console.log("Valor de idUser: ", idUser);
+                //  ind = buscaIndice(idUser);
                 if(ind >= 0)
                 {
                     nom_div("identifica").value = listadoPersonas[ind].cedula;
@@ -410,24 +340,18 @@ var imprimeUsuarios = (function imprimeUsuarios()
                     nom_div("email").value = listadoPersonas[ind].correo;
                     nom_div("fechanace").value = listadoPersonas[ind].nacimiento;
                     $('#guarda').html("Actualizar Usuario");
-
-
-
-
                 }
                 else
                 {
                    alert("No existe el ID");
                 }
-
             });
+
             //Eliminar...
             nom_div("d_" + i).addEventListener('click', function(event)
             {
                 var ind = event.target.id.split("_")[1];
                 var idUser = listadoPersonas[ind].identificacion;
-
-
                 swal({
                         title: "¿Estás segur@?",
                         text: "Se eliminara al paciente " + listadoPersonas[ind].nombre + " " + listadoPersonas[ind].apellido,
@@ -437,61 +361,37 @@ var imprimeUsuarios = (function imprimeUsuarios()
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
                     },
-                    function()
+                function()
+                {
+                    eliminarRegistro(ind,function(data)
                     {
-                        eliminarRegistro(ind,function(data)
+                        if(data.status)
                         {
-
-                            if(data.status)
+                            sweetAlert("Oops", "No se pudo eliminar.", "error");
+                        }
+                        else
+                        {
+                            ind = buscaIndice(idUser);
+                            if(ind >= 0)
                             {
-                                sweetAlert("Oops", "No se pudo eliminar.", "error");
-
-                            }
-                            else
-                            {
-                                ind = buscaIndice(idUser);
-                                if(ind >= 0)
-                                {
-                                    listadoPersonas.splice(ind, 1);
-                                    swal({   title: "Eliminado!",   text: "Se ha elimiando exitosamente",   timer: 1500,   showConfirmButton: false, type : "success"});
-                                    traerPersonas();
-                                }
-                                
-                            }
-
-
-                            
-                                                        
-                        });
-                    })
-
-
-
-
-
-
-
+                                listadoPersonas.splice(ind, 1);
+                                swal({   title: "Eliminado!",   text: "Se ha elimiando exitosamente",   timer: 1500,   showConfirmButton: false, type : "success"});
+                                traerPersonas();
+                            }                            
+                        }
+                    });
+                })
             });
         }
-        return imprimeUsuarios;
+    return imprimeUsuarios;
     })();
 
-
-
-
-
-
-
-function nom_div(div)
+    function nom_div(div)
     {
         return document.getElementById(div);
     }
-
-
-
-
-
-var buscaIndice = function(id)
+    
+    var buscaIndice = function(id)
     {
         var indice = -1;
         for(var i in listadoPersonas)
@@ -505,6 +405,7 @@ var buscaIndice = function(id)
         return indice;
     }
 
+<<<<<<< HEAD
 
 
 
@@ -514,6 +415,8 @@ var buscaIndice = function(id)
 
 
 
+=======
+>>>>>>> origin/master
     $("#form").submit(function(event)
     {
         event.preventDefault();
@@ -538,10 +441,7 @@ var buscaIndice = function(id)
                 sweetAlert("Correo inválido", "El correo "+($("#email").val())+", no es válido", "error");
                 enviaForm = false;
             }
-
-        var letrero = $('#guarda').html();
-        
-
+        var letrero = $('#guarda').html();        
         if (letrero == "Guardar Usuario") 
             {
                 crearRegistro(function(data)
@@ -551,8 +451,7 @@ var buscaIndice = function(id)
                         $("#identifica").val("");
                         $("#email").val("");
                         $("#identifica").focus();
-                        traerPersonas();
-                        
+                        traerPersonas();                        
                         swal
                         ({  
 
@@ -561,9 +460,7 @@ var buscaIndice = function(id)
                             timer   : 1000,
                             type    : "error",  
                             showConfirmButton: false 
-                        });
-                    
-
+                        });                
                     }
                     else
                     {
@@ -624,25 +521,15 @@ var buscaIndice = function(id)
 
 
                     }
-
-              });  
-
-               
-            };
-             
-
-
-        if (letrero === "Actualizar Usuario") 
-            {
-                              
+              });
+            };             
+            if (letrero === "Actualizar Usuario") 
+            {                                    
                 updateRegistro(ind,function(data)
                 {
-
                    // console.log("Estado: " + data.status)
-
                     if(!data.status)
-                    {
-                      
+                    {                      
                         $("#identifica").val("");
                         $("#email").val("");
                         $("#identifica").focus();
@@ -650,14 +537,12 @@ var buscaIndice = function(id)
                         $('#guarda').html("Guardar Usuario")
                         swal
                         ({  
-
                             title   : "Oops",   
                             text    : "UPDATE Esta cedula o correo ya esta asociad@ a un paciente.",   
                             timer   : 1000,
                             type    : "error",  
                             showConfirmButton: false 
-                        });
-                    
+                        });                    
                     }
                     else
                     {
@@ -674,45 +559,29 @@ var buscaIndice = function(id)
                         $('#guarda').html("Guardar Usuario");
                     }
                 });
-
-
             };
-
-
-                
-
- 
-             
-        }
-        
+        }    
         return enviaForm;
     });
 
-
     function calculaEdad (fechanacimiento) 
-        {
-            var fecha_actual = new Date();
-            var parteFn = fechanacimiento.split("-");
-            var fechaCompara = new Date(parteFn[0], parteFn[1], parteFn[2]); //año, mes día
-            return Math.floor((fecha_actual - fechaCompara) / 1000 / 3600 / 24 / 365);
-            //Milisegundos, segundos en una hora, horas en un día, días en un año...
-        }
-
-
-
-
-
-
-    
-function limpiaCampos(campos){
-
-    for(var i = 0; i < campos.length; i++)
     {
-        $("#" + campos[i]).val("");
+        var fecha_actual = new Date();
+        var parteFn = fechanacimiento.split("-");
+        var fechaCompara = new Date(parteFn[0], parteFn[1], parteFn[2]); //año, mes día
+        return Math.floor((fecha_actual - fechaCompara) / 1000 / 3600 / 24 / 365);
+        //Milisegundos, segundos en una hora, horas en un día, días en un año...
     }
-}
+    
+    function limpiaCampos(campos)
+    {
+        for(var i = 0; i < campos.length; i++)
+        {
+            $("#" + campos[i]).val("");
+        }
+    }
 
-var validaEmail = function(email)
+    var validaEmail = function(email)
 	{
 		var emailReg = /^([\da-zA-Z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
         return emailReg.test(email);

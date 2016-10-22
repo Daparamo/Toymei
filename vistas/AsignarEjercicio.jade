@@ -5,16 +5,31 @@ html(lang='es')
       meta(name='google', value='notranslate')
       meta(name='viewport', content='initial-scale=1, maximum-scale=1, user-scalable=no')
       title!= titulo
-      link(rel='stylesheet', type='text/css', href='css/AsignarEjercicio.css')      
+      link(rel='stylesheet', type='text/css', href='css/AsignarEjercicio.css')
+      script(src='js/three.js')          
+      script(src='js/OrbitControls.js')
+      script(src='js/TransformControls.js')
+      script(src='js/DragControls.js')
+      script(src='js/stats.min.js')
+      script(src='js/Cubitos.js')    
+      script(src='js/sweetalert.min.js')
+      script(src='js/jquery-1.11.3.min.js')
+      script(src='js/AsignarEjercicio.js')      
+      
   body
+    style.
+      body {      
+      overflow: hidden;
+      }
+
     center
-      div
+      #header
         span.titulo Asignar Ejercicio
-        a(href='/atras')
-          img#atras.iconHeader(src='img/exit.png', border='0')
-          | atras
-        a(href='/logout')
-          img#logout.iconHeader(src='img/exit.png', border='0')
+        #ButtonHeader
+          a(href='/')
+            img#atras.iconHeader(src='img/Atras.png', border='0')          
+          a(href='/logout')
+            img#logout.iconHeader(src='img/exit.png', border='0')
         br
         select#TipoEjercicio(name='TipoEjercicio')
           option(value='0') Ejercicio
@@ -23,6 +38,8 @@ html(lang='es')
         input#RepeticionesEjercicio(name='RepeticionesEjercicio', min='0', type='number', placeholder='Numero de repeticiones')
     br
     #cajon1
-      input(type='search')
+      input(type='search', placeholder='Search')
       #lista
     #cajon2
+    #bottomB      
+      span hola ke ase
