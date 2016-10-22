@@ -2,12 +2,45 @@ $(function()
 {
 	listadoPersonas = [];
     var ind;
-  	traerPersonas();
-
+  	traerPersonas();    
+    
 //Traer Personas
-//
-function traerPersonas (callback)
- {        
+//    
+    $("#asignarEjercicio").click(function(event) {
+        alert("lol");
+        crearEjercicio();
+    });
+    function crearEjercicio (callback)
+    {        
+        var dataEjercicio = {};
+        dataEjercicio.nombreEjercicio = $("#NombreEjercicio").val();
+        dataEjercicio.repeticiones = $("#repeticionesEjercicio").val();
+        dataEjercicio.repeticiones = $("#tiempoEjercicio").val();        
+        
+        $.ajax(
+        {
+            url         : "crearEjercicio",
+            type        : "POST",
+            data        : JSON.stringify(dataEjercicio),
+            dataType    : "json",
+            contentType: "application/json; charset=utf-8"
+        }).done(function(data)
+        { 
+            console.log(data)
+            //listadoPersonas=data;
+           //console.log(listadoPersonas);            
+           //imprimeUsuarios(listadoPersonas);  
+        }).error(function(request, status, error)
+        {
+            //sweetAlert("Oops...", request.responseText, "error");
+            console.log("OOOOOPPPPSSSS::::: "+error);
+            alert(request.responseText);
+            window.location = "/";
+        });
+    }
+
+    function traerPersonas (callback)
+    {        
         $.ajax(
         {
             url         : "traerPersonas",
@@ -27,7 +60,8 @@ function traerPersonas (callback)
             //alert(request.responseText);
             window.location = "/";
         });
-    }        
+    } 
+
     var muestraTodos = function (tipo, index)
     {
         $("#titulo").html($nomUsuario + " ("+(todos.length <= 9 ? "0" + todos.length : todos.length)+")");
@@ -125,9 +159,6 @@ function traerPersonas (callback)
     }
 
 });
-
-
-
 
 /*
         //Poner las acciones de editar y eliminar...

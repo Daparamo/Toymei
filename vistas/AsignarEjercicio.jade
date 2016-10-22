@@ -34,8 +34,10 @@ html(lang='es')
         select#TipoEjercicio(name='TipoEjercicio')
           option(value='0') Ejercicio
           option(value='1') Estiramiento
-        input#TiempoEjercicio(name='TiempoEjercicio', type='number', min='0', placeholder='Tiempo en segundos')
-        input#RepeticionesEjercicio(name='RepeticionesEjercicio', min='0', type='number', placeholder='Numero de repeticiones')
+        input#NombreEjercicio(name='NombreEjercicio', type='text', placeholder='Nombre del ejercicio')
+        input#TiempoEjercicio(name='tiempoEjercicio', type='number', min='0', placeholder='Tiempo en segundos')
+        input#RepeticionesEjercicio(name='repeticionesEjercicio', min='0', type='number', placeholder='Numero de repeticiones')
+        button#Enviar(name='Enviar') asignar Ejercicio
     br
     #cajon1
       input(type='search', placeholder='Search')

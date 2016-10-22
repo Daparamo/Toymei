@@ -109,6 +109,8 @@ var express 		= 	require("express"),
 	//Traer todas los pacientes x medico
 	app.get('/traerPersonas', rutas.traerPersonas);
 
+	app.post('/crearEjercicio', rutas.crearEjercicio);
+
 	//Actualizar registro de usuario
 	app.put('/updateUsuario', rutas.updateRegistro);
 
