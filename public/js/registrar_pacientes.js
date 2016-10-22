@@ -136,10 +136,6 @@ function traerPersonas (callback)
         });
     }
 
-<<<<<<< HEAD
-
-
-
     function traerEmailandPass (cedula,callback)
     {
 
@@ -174,12 +170,6 @@ function traerPersonas (callback)
 
     }
 
-
-
-
-
-=======
->>>>>>> origin/master
     var eliminarRegistro = function(ind,callback)
     {
         var data = {};
@@ -405,18 +395,6 @@ function traerPersonas (callback)
         return indice;
     }
 
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> origin/master
     $("#form").submit(function(event)
     {
         event.preventDefault();

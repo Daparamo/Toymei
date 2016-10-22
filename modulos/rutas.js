@@ -165,10 +165,6 @@ var registroPost = function(req, res, next)
 	});
 };
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 var createRegistro = function (req, res)
 {
 	if(req.isAuthenticated())
@@ -209,10 +205,6 @@ var updateRegistro = function (req, res)
 	}
 };
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 var traerPersonas =  function(req, res)
 {
 	//Traer todos los To-Do's...
@@ -233,7 +225,7 @@ var traerPersonas =  function(req, res)
 	}
 };
 
-<<<<<<< HEAD
+
 var crearEjercicio =  function(req, res)
 {
 	//Traer todos los To-Do's...
@@ -256,8 +248,6 @@ var crearEjercicio =  function(req, res)
 		res.status(401).send("Acceso no autorizado");
 	}
 };
-=======
->>>>>>> origin/master
 
 var deleteTask = function(req, res)
 {
@@ -442,11 +432,6 @@ var validar_correo = function(req, res)
 	
 };
 
-<<<<<<< HEAD
-=======
-
-
-
 var traerEmailandPass = function(req, res)
 {
 
@@ -511,30 +496,6 @@ var traerEmailandPass = function(req, res)
 	
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> origin/master
 function actualizarUser (res,req,data) 
 {	
 	if(req.isAuthenticated())
@@ -665,16 +626,9 @@ module.exports.eliminarUsuario = eliminarUsuario;
 module.exports.validar_correo = validar_correo;
 module.exports.vista_pacientes = vista_pacientes;
 module.exports.AsignarEjercicio = AsignarEjercicio;
-<<<<<<< HEAD
-=======
-
 
 module.exports.traerEmailandPass = traerEmailandPass;
 
-
-
-
->>>>>>> origin/master
 module.exports.deleteTask = deleteTask;
 module.exports.getTask = getTask;
 module.exports.notFound404 = notFound404;

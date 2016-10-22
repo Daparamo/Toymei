@@ -109,30 +109,11 @@ var express 		= 	require("express"),
 	//Traer todas los pacientes x medico
 	app.get('/traerPersonas', rutas.traerPersonas);
 
-<<<<<<< HEAD
 	app.post('/crearEjercicio', rutas.crearEjercicio);
-
-=======
-<<<<<<< HEAD
-
 
 	//Traer Email y Passwod de paciente
 	app.post('/traerEmailandPass', rutas.traerEmailandPass);
 
-
-
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> origin/master
->>>>>>> origin/master
 	//Actualizar registro de usuario
 	app.put('/updateUsuario', rutas.updateRegistro);
 
@@ -180,13 +161,11 @@ var express 		= 	require("express"),
 				  status  : true,
 				  correo  : req.body.correo
 				});
-<<<<<<< HEAD
+
 			});
 		 };
-
-=======
-			});	
-	});
+	
+	
 	//Para cualquier url que no cumpla la condición...
 	app.get("*", rutas.notFound404);
 	//Iniciar el Servidor...
@@ -195,7 +174,6 @@ var express 		= 	require("express"),
 	   var message = 'Servidor corriendo en @ http://localhost:' + server.address().port;
 	   console.log(message);
 	});
->>>>>>> origin/master
 
 		 if (req.body.tipo === "restablecer_password")
 		 {
@@ -232,11 +210,6 @@ var express 		= 	require("express"),
 	});
 
 
-
-
-
-
-<<<<<<< HEAD
 	//Para cualquier url que no cumpla la condición...
 	app.get("*", rutas.notFound404);
 	//Iniciar el Servidor...
@@ -245,26 +218,3 @@ var express 		= 	require("express"),
 	   var message = 'Servidor corriendo en @ http://localhost:' + server.address().port;
 	   console.log(message);
 	});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//looooooooooooooooooooool
-=======
-	
->>>>>>> origin/master
