@@ -115,6 +115,21 @@ var express 		= 	require("express"),
 	app.get('/traerPersonas', rutas.traerPersonas);
 
 
+
+	//Traer Email y Passwod de paciente
+	app.post('/traerEmailandPass', rutas.traerEmailandPass);
+
+
+
+
+
+
+
+
+
+
+
+
 	//Actualizar registro de usuario
 
 	app.put('/updateUsuario', rutas.updateRegistro);
@@ -138,6 +153,46 @@ var express 		= 	require("express"),
 	app.post('/mail', function (req, res, next)
 	{
 		
+
+		if (req.body.tipo === "informar_paciente")
+		 {
+
+		 	//console.log("Entro a informar paciente");
+
+		 	var txtMsg = "Cordial saludo " + req.body.nombre + ", el siguiente correo es para informar las credenciales para el acceso a la App ToyMei, podra hacerlo con los siguientes datos,  Usuario: " + req.body.correo + " Contraseña: "+ req.body.contrasena +" ,recuerda cambiarla en el menú principal. Por favor no reenviar este correo."; 
+			
+			//console.log(txtMsg);
+
+			app.mailer.send('mail',
+			{
+				to: req.body.correo,
+				subject: 'ToyMei - Información User and Pass',
+				text: txtMsg
+			},
+			function (err)
+			{
+				if (err)
+				{
+					res.json
+				({
+				  status  : false,
+				  correo  : req.body.correo
+				});
+					return;
+		    	}
+				res.json
+				({
+				  status  : true,
+				  correo  : req.body.correo
+				});
+			});
+		 };
+
+
+		 if (req.body.tipo === "restablecer_password")
+		 {
+		 	//console.log("Entro a enviarle contraseña al medico");
+		 	
 			var txtMsg = "Cordial saludo " + req.body.correo + ", la contraseña nueva es: " + req.body.contrasena + " recuerda cambiarla en el menu principal."; 
 			
 			console.log(txtMsg);
@@ -165,42 +220,13 @@ var express 		= 	require("express"),
 				  correo  : req.body.correo
 				});
 			});
-		
-	});
-
-
-
-
-
-	/*
-	app.post('/mail', function (req, res, next)
-	{
-		if(req.isAuthenticated())
-		{
-			var txtMsg = "Cordial saludo, tu amigo " + req.user[0].nombre +
-						 ", desea compartir contigo el To-Do " + req.body.todo;
-			app.mailer.send('mail',
-			{
-				to: req.body.email,
-				subject: 'To-Do Compartido',
-				text: txtMsg
-			},
-			function (err)
-			{
-				if (err)
-				{
-					res.json({status : false});
-					return;
-		    	}
-				res.json({status : true});
-			});
-		}
-		else
-		{
-			res.status(401).send("Acceso no autorizado");
 		}
 	});
-*/
+
+
+
+
+
 
 	//Para cualquier url que no cumpla la condición...
 	app.get("*", rutas.notFound404);
@@ -210,3 +236,23 @@ var express 		= 	require("express"),
 	   var message = 'Servidor corriendo en @ http://localhost:' + server.address().port;
 	   console.log(message);
 	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//looooooooooooooooooooool

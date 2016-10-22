@@ -5,6 +5,74 @@ $(function()
 
   traerPersonas();
 
+function enviarContrasena (datos,callback) 
+    {
+        var data = {};
+        data.correo = datos.email;
+        data.contrasena = datos.contrasena;
+        data.tipo = datos.tipo;
+        data.nombre = datos.nombre;
+        $.ajax(
+        {
+            url         : "mail",
+            type        : "POST",
+            data        : JSON.stringify(data),
+            dataType    : "json",
+            contentType: "application/json; charset=utf-8"
+        }).done(function(data)
+        {
+            callback(data);
+            //console.log(data.status)
+
+        }).error(function(request, status, error)
+        {
+            
+
+            sweetAlert("Oops...", request.responseText, "error");
+            //alert(request.responseText);
+            window.location = "/";
+        });
+
+    }
+
+function enviarCorreo (callback) 
+    {
+        var data = {};
+        data.correo = $("#correo").val();
+
+        $.ajax(
+        {
+            url         : "validar_correo",
+            type        : "POST",
+            data        : JSON.stringify(data),
+            dataType    : "json",
+            contentType: "application/json; charset=utf-8"
+        }).done(function(data)
+        {
+            callback(data);
+
+        }).error(function(request, status, error)
+        {
+            
+
+            sweetAlert("Oops...", request.responseText, "error");
+            //alert(request.responseText);
+            window.location = "/";
+        });
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 function traerPersonas (callback)
  {
         
@@ -94,6 +162,45 @@ function traerPersonas (callback)
         });
 
     }
+
+
+
+
+    function traerEmailandPass (cedula,callback)
+    {
+
+        var data = {};
+        data.cedula = cedula;
+        
+
+
+
+        $.ajax(
+        {
+            url         : "traerEmailandPass",
+            type        : "POST",
+            data        : JSON.stringify(data),
+            dataType    : "json",
+            contentType: "application/json; charset=utf-8"
+        }).done(function(data)
+        {
+         //   console.log(data);
+            callback(data);
+            
+            
+
+        }).error(function(request, status, error)
+        {
+            
+
+            sweetAlert("Oops...", request.responseText, "error");
+                var delay = 2000;
+                                    setTimeout(function(){ window.location = "/" }, delay);
+        });
+
+    }
+
+
 
 
 
@@ -406,6 +513,7 @@ var buscaIndice = function(id)
 
 
 
+
     $("#form").submit(function(event)
     {
         event.preventDefault();
@@ -459,9 +567,62 @@ var buscaIndice = function(id)
                     }
                     else
                     {
-                    limpiaCampos(campos);
-                    sweetAlert("Bien!", "Se ha guardado el paciente correctamente", "success");
-                    traerPersonas();
+                    //limpiaCampos(campos);
+                    traerEmailandPass($("#identifica").val(),function(data)
+                    {
+
+                   // console.log("Estado: " + data.status)
+
+                    if(!data.status)
+                    {
+                      
+                        console.log("No se actualizo contraseña por que no se encontro usuario " + data.correo);
+                         traerPersonas();
+                        // limpiaCampos(campos)
+                    
+                    }
+                    else
+                    {
+                        enviarContrasena({"contrasena"  : data.contrasena, "nombre" : data.nombre ,  "email" : data.correo, "tipo": "informar_paciente"}, function(data)
+                            {
+
+                                if(data.status)
+                                {
+                                    //event.preventDefault();
+                                    swal
+                                    ({   
+                                        title   : "!Bien! :)",   
+                                        text    : "Se ha guardado el paciente correctamente.",   
+                                        timer   : 2000,
+                                        type    : "success",  
+                                        showConfirmButton: false 
+                                    });
+
+                                    traerPersonas();
+                                    limpiaCampos(campos);
+                                   
+                                    
+                                    
+                                }
+
+                                else
+                                {
+                                    swal("Error!", "No se ha podido enviar el email a: " + data.correo, "error");
+                                }
+                            });
+
+                        
+                        
+                    }
+                    });
+                    
+                    
+
+
+
+
+
+
                     }
 
               });  

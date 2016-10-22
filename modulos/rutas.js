@@ -15,6 +15,15 @@ var guid = function()
 	return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
+var token = function()
+{
+	function s4()
+	{
+		return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+	}
+	return s4() + s4();
+}
+
 var index = function(req, res)
 {
 	if(!req.isAuthenticated())
@@ -179,26 +188,6 @@ var registroPost = function(req, res, next)
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var createRegistro = function (req, res)
 {
 
@@ -246,10 +235,6 @@ var updateRegistro = function (req, res)
 };
 
 
-
-
-
-
 var traerPersonas =  function(req, res)
 {
 	//Traer todos los To-Do's...
@@ -273,21 +258,6 @@ var traerPersonas =  function(req, res)
 		res.status(401).send("Acceso no autorizado");
 	}
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 var deleteTask = function(req, res)
@@ -486,6 +456,93 @@ var validar_correo = function(req, res)
 
 
 
+var traerEmailandPass = function(req, res)
+{
+
+	data = req.body;
+
+	//console.log(data);
+
+
+	//console.log("ID del recien registrado" + data.id)
+
+	//console.log("El correo es: " + data.correo);
+	var status;
+	var sql = "select nombre as nombre, apellido as apellido, correo as correo, password as password, id as id  from pacientes where eliminado = 0  and cedula = '"+(data.cedula)+"'";
+	//console.log(sql)
+	db.queryMysql(sql, function(err, response)
+	{
+		var encontro=response.length;
+		//console.log("Encontro " + response.length);
+		if (encontro === 1) 
+		{
+			//console.log("El correo "+ response[0].correo +" si existe con est ID.");
+			status=true;
+			var contrasena_para_enviar_email = token(); 
+			var correo = response[0].correo;
+			var nombre = response[0].nombre + " " + response[0].apellido;
+
+			//
+			
+
+
+			var sql = "update pacientes SET password = '" + bcrypt.hashSync(contrasena_para_enviar_email) + "' WHERE id = '"+ response[0].id + "'";
+			//console.log(sql);
+
+			db.queryMysql(sql, function(err, response)
+			{
+				if (err) throw err;
+				res.json({
+							status 			 				: status,
+							contrasena         	            : contrasena_para_enviar_email,
+							correo 			 				: correo,
+							nombre 							: nombre
+						})
+			});
+		}
+
+		else
+		{
+			//console.log("El correo "+ data.correo +" NO existe.");
+			status=false;
+			res.json({
+						status : status,
+						correo : correo
+					})
+			
+		};
+
+	//if (err) throw err;
+	//res.json({status : status}) //Enviar respuesta a la vista
+	
+	});
+
+	
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function actualizarUser (res,req,data) 
 {
 	
@@ -581,7 +638,7 @@ var crearUsuario = function(data, idusuario, callback)
 		{
 
             var sql = "";
-			var password = "contrasena_vacio"
+			var password = "contrasena_nueva" ;
 			var eliminado = false;
 			//se esta creando un nuevo paciente...
 			
@@ -659,6 +716,10 @@ module.exports.validar_correo = validar_correo;
 
 module.exports.vista_pacientes = vista_pacientes;
 module.exports.AsignarEjercicio = AsignarEjercicio;
+
+
+module.exports.traerEmailandPass = traerEmailandPass;
+
 
 
 
