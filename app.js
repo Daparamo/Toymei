@@ -96,6 +96,17 @@ var express 		= 	require("express"),
 	//Para guardar el usuario...
 	app.post("/registrore", rutas.registroPost);
 
+	//Olvido contraseña
+
+	app.get("/olvido_contrasena", rutas.olvido_pass);
+
+	//Validar correo para recuperar contraseña
+
+	app.post("/validar_correo", rutas.validar_correo);
+
+	
+
+
 
 
 
@@ -134,6 +145,44 @@ var express 		= 	require("express"),
 
 	app.post('/mail', function (req, res, next)
 	{
+		
+			var txtMsg = "Cordial saludo " + req.body.correo + ", la contraseña nueva es: " + req.body.contrasena + " recuerda cambiarla en el menu principal."; 
+			
+			console.log(txtMsg);
+
+			app.mailer.send('mail',
+			{
+				to: req.body.correo,
+				subject: 'ToyMei - Restablecer contraseña',
+				text: txtMsg
+			},
+			function (err)
+			{
+				if (err)
+				{
+					res.json
+				({
+				  status  : false,
+				  correo  : req.body.correo
+				});
+					return;
+		    	}
+				res.json
+				({
+				  status  : true,
+				  correo  : req.body.correo
+				});
+			});
+		
+	});
+
+
+
+
+
+	/*
+	app.post('/mail', function (req, res, next)
+	{
 		if(req.isAuthenticated())
 		{
 			var txtMsg = "Cordial saludo, tu amigo " + req.user[0].nombre +
@@ -159,6 +208,13 @@ var express 		= 	require("express"),
 			res.status(401).send("Acceso no autorizado");
 		}
 	});
+*/
+
+
+
+
+
+
 
 	//Para cualquier url que no cumpla la condición...
 	app.get("*", rutas.notFound404);

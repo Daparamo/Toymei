@@ -21,6 +21,11 @@ $(function()
                 sweetAlert("Correo inválido", "El correo "+($("#correo").val())+", no es válido", "error");
                 enviaForm = false;
             }
+            if(!validaPassword($("#password").val()))
+            {
+                sweetAlert("Contraseña inválida", "La contraseña debe tener minimo mayusculas-minuscula-caracter especial- sin espacio en blanco", "error");
+                enviaForm = false;
+            }
         }
         return enviaForm;
     });
@@ -30,4 +35,13 @@ $(function()
 		var emailReg = /^([\da-zA-Z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
         return emailReg.test(email);
 	};
+
+    var validaPassword = function(password)
+    {
+        var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,15}$/;
+        return regex.test(password);
+    };
+
+   
+
 });

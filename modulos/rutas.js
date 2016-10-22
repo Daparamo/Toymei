@@ -31,6 +31,9 @@ var index = function(req, res)
     }
 };
 
+
+
+
 var vista_pacientes =  function(req, res)
 {
 	var user = req.user;
@@ -42,16 +45,15 @@ var vista_pacientes =  function(req, res)
 
 };
 
-var AsignarEjercicio =  function(req, res)
-{
-	var user = req.user;
-	res.render("AsignarEjercicio", 
-	{
-		titulo 	:  	"Asignar Ejercicio",
-		usuario	:	"Bienvenido " + user[0].nombre
-	});
 
-};
+
+
+
+
+
+
+
+
 
 var login = function(req, res)
 {
@@ -63,9 +65,11 @@ var login = function(req, res)
 
 var loginPost = function (req, res, next)
 {
-	passport.authenticate('local', {
-	successRedirect: '/menu', //login
-	failureRedirect: '/login'},
+	passport.authenticate('local', 
+	{
+		successRedirect: '/menu', //login
+		failureRedirect: '/login'
+	},
 	function(err, user, info)
 	{
 		if(err)
@@ -108,6 +112,22 @@ var registro =  function(req, res)
 
 };
 
+
+var olvido_pass =  function(req, res)
+{
+	res.render("olvido_contrasena", {
+		titulo 	:  	"¿Olvido su contraseña?",
+		data 	:	[]
+	});
+
+};
+
+
+
+
+
+
+
 var registroPost = function(req, res, next)
 {
     //Buscar si el nombre de usuario o correo ya existen...
@@ -125,9 +145,12 @@ var registroPost = function(req, res, next)
 									error: 'Nombre de usuario o correo ya existe',
 									data : [data.nombre, data.correo, data.username]
 								});
-		}	
+		}
+
+		
 		else
 		{
+
             var password = bcrypt.hashSync(data.password);
 			sql = "INSERT INTO users (nombre, usuario, clave, email, fecha) " +
 					  "VALUES ('" + data.nombre + "', '" + data.username + "', " +
@@ -144,8 +167,32 @@ var registroPost = function(req, res, next)
 	});
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var createRegistro = function (req, res)
-{	
+{
+
+
+	
 	if(req.isAuthenticated()){
 	
 	crearUsuario(req.body,req.user[0].idusuario, function(err, data, status){
@@ -164,8 +211,10 @@ var createRegistro = function (req, res)
 
 };
 
+
 var updateRegistro = function (req, res)
 {
+
 	//console.log(req.isAuthenticated());
 	if(req.isAuthenticated()){
 	
@@ -185,6 +234,11 @@ var updateRegistro = function (req, res)
 	}
 };
 
+
+
+
+
+
 var traerPersonas =  function(req, res)
 {
 	//Traer todos los To-Do's...
@@ -193,6 +247,9 @@ var traerPersonas =  function(req, res)
 		//var data= req.body;
 		var usuario = req.user[0].idusuario;
 		//var data req.body;
+
+
+
 
 		db.queryMysql("select * from pacientes where idusuario = " + usuario +" and eliminado = 0", function(err, data){
 			if (err) throw err;
@@ -205,6 +262,22 @@ var traerPersonas =  function(req, res)
 		res.status(401).send("Acceso no autorizado");
 	}
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 var deleteTask = function(req, res)
 {
@@ -249,12 +322,16 @@ var notFound404 = function(req, res)
 	res.status(404).send("Página no encontrada :( en el momento");
 };
 
+
+
+
+
 var EditarUsuario = function(res,req,data, idusuario, callback)
 {
 	
     var sql = "select id as id_bd from pacientes where eliminado = 0  and (cedula = '"+(data.cedula)+"' or correo = '"+(data.correo)+"') and idusuario = '"+idusuario+"'";
 	
- 	console.log(sql)
+ 	//console.log(sql)
 
  	db.queryMysql(sql, function(err, response)
 	{
@@ -280,19 +357,21 @@ var EditarUsuario = function(res,req,data, idusuario, callback)
 		{
 
 			//console.log("ID que viene de la consulta: " + response[0].id_bd);
-			if(tamano === 1)
+			if(tamano === 1 && data.id === response[0].id_bd)
 			{
-				if (data.id !== response[0].id_bd)
-				{
-					console.log("Se estalla");
-					
-					callback("","",false);
-				}
-
+				
 				actualizarUser(res,req,data);
 				console.log("Quiere actualizar sus datos propios") 
 
 				
+				
+			}
+
+
+			if(tamano === 1 && data.id !== response[0].id_bd)
+			{
+				console.log("LOOOL")			
+				callback("","",false);
 				
 			}
 
@@ -338,6 +417,64 @@ var EditarUsuario = function(res,req,data, idusuario, callback)
 	});
 };
 
+
+
+
+var validar_correo = function(req, res)
+{
+
+	data = req.body;
+	//console.log("El correo es: " + data.correo);
+	var status;
+	var sql = "select email as email from users where email = '" + data.correo + "'";
+	//console.log(sql)
+	db.queryMysql(sql, function(err, response)
+	{
+		var encontro=response.length;
+		//console.log("Encontro " + response.length);
+		if (encontro === 1) 
+		{
+			//console.log("El correo "+ data.correo+" si existe.");
+			status=true;
+			var contrasena_nueva = guid();
+
+
+			var sql = "update users SET clave = '" + bcrypt.hashSync(contrasena_nueva) + "' WHERE email = '"+ data.correo + "'";
+			//console.log(sql);
+
+			db.queryMysql(sql, function(err, response)
+			{
+				if (err) throw err;
+				res.json({
+							status 			 : status,
+							contrasena_nueva : contrasena_nueva,
+							correo 			 : data.correo
+						})
+			});
+		}
+
+		else
+		{
+			//console.log("El correo "+ data.correo +" NO existe.");
+			status=false;
+			res.json({
+						status : status,
+						correo : data.correo
+					})
+			
+		};
+
+	//if (err) throw err;
+	//res.json({status : status}) //Enviar respuesta a la vista
+	
+	});
+
+	
+};
+
+
+
+
 function actualizarUser (res,req,data) 
 {
 	
@@ -366,6 +503,11 @@ function actualizarUser (res,req,data)
 		});
 	}
 }
+
+
+
+
+
 
 var eliminarUsuario = function (req,res)
 {
@@ -473,15 +615,19 @@ module.exports.loginPost = loginPost;
 module.exports.logout = logout;
 module.exports.registro = registro;
 module.exports.registroPost = registroPost;
-module.exports.registro = registro;
 
-module.exports.AsignarEjercicio = AsignarEjercicio;
+//Olvido su contraseña
+module.exports.olvido_pass = olvido_pass;
+
+
 
 module.exports.createRegistro = createRegistro;
+
 
 module.exports.EditarUsuario = EditarUsuario;
 
 module.exports.crearUsuario = crearUsuario;
+
 
 //Get para traer todas las personas x medico
 module.exports.traerPersonas = traerPersonas;
@@ -493,6 +639,10 @@ module.exports.updateRegistro = updateRegistro;
 
 //Eliminar registro
 module.exports.eliminarUsuario = eliminarUsuario;
+
+
+//Post para validar el correo
+module.exports.validar_correo = validar_correo;
 
 
 

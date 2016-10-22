@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-10-2016 a las 04:22:10
+-- Tiempo de generación: 21-10-2016 a las 10:36:05
 -- Versión del servidor: 10.1.10-MariaDB
 -- Versión de PHP: 5.6.19
 
@@ -47,16 +47,21 @@ INSERT INTO `pacientes` (`id`, `cedula`, `idusuario`, `nombre`, `apellido`, `dat
 ('08669534-56a7-0ece-c85b-fd2c08065c3b', 1, 2, 'Luis', 'Sanchez', '10/20/2016', '1990-01-11', 'luis@mail.com', 'contrasena_vacio', 1),
 ('2983dd63-3df5-da2e-64cf-26f8aa4cff60', 9, 25, 'Didier', 'Sanchez', '10/20/2016', '1996-05-05', 'didier@mail.com', 'contrasena_vacio', 0),
 ('2eff0823-1df8-b2cd-ea54-d9484d67a809', 7, 25, 'Raul', 'Sanchez', '10/20/2016', '1996-05-04', 'raul@mail.com', 'contrasena_vacio', 0),
+('46b5f924-f8eb-7b84-6f33-dbe538fde735', 89, 24, 'Fernando', 'Martinez', '10/20/2016', '0005-05-05', 'sad@mail.com', 'contrasena_vacio', 1),
 ('46f01e3f-4c96-f4c6-6625-453d8a50616c', 2, 2, 'Daniel', 'Paramo', '10/20/2016', '0666-05-05', 'daparamo@mail.com', 'contrasena_vacio', 1),
-('529ed96e-97fe-fef5-b516-1998c1224fa6', 12, 24, 'Aleja', 'Sarmiento', '10/20/2016', '0004-04-04', 'aleja@mail.com', 'contrasena_vacio', 0),
+('529ed96e-97fe-fef5-b516-1998c1224fa6', 10, 24, 'Alejauu', 'Sarmiento', '10/20/2016', '1990-04-04', '11@mail.com', 'contrasena_vacio', 1),
 ('6695ec97-0f1a-da43-1ef1-6d9a3caf0b59', 1, 2, 'Luis', 'Sanchez', '10/20/2016', '1992-04-04', 'luis@mail.com', 'contrasena_vacio', 0),
-('69fa1460-1e68-864b-3e97-53d40e501d70', 8, 24, 'maria', 'Sanchez', '10/20/2016', '2001-08-23', '89741@mail.com', 'contrasena_vacio', 0),
+('69fa1460-1e68-864b-3e97-53d40e501d70', 11, 24, 'maria', 'Sanchez', '10/20/2016', '2001-08-23', '11@mail.com', 'contrasena_vacio', 1),
+('7b23be6b-35da-f40f-0742-6d81556da0f6', 14, 24, 'as', 'a', '10/20/2016', '0004-04-04', 'asff@mail.com', 'contrasena_vacio', 1),
 ('7c7f480e-ec44-310a-0f4c-68262889fd85', 2, 2, 'Carolina', 'Guzman', '10/20/2016', '1789-04-04', 'guzman@mail.com', 'contrasena_vacio', 0),
-('a4b27c85-0c75-7a88-d9dd-2cab2f6a67d6', 6, 24, 'Wilson', 'Forero', '10/20/2016', '1999-05-05', '3303@mail.com', 'contrasena_vacio', 0),
+('8534a0a0-e965-1396-aeaa-8e6fbdbfe941', 4444, 24, 'Fernando', 'Martinez', '10/20/2016', '1998-05-05', '444@mail.com', 'contrasena_vacio', 1),
+('a4b27c85-0c75-7a88-d9dd-2cab2f6a67d6', 11, 24, 'Wilson', 'Forero', '10/20/2016', '1999-05-05', 'wilson@mail.com', 'contrasena_vacio', 1),
 ('bf2987d8-a367-85a1-9e22-635fd853c100', 8, 25, 'Ernesto', 'Villa', '10/20/2016', '1852-05-05', 'ernesto@mail.com', 'contrasena_vacio', 0),
+('bfd746d8-b597-645f-4cc7-831fe6710ea0', 77, 24, '11111111', 'Paramo', '10/20/2016', '1975-05-05', '11@mail.com', 'contrasena_vacio', 0),
 ('c58f16d1-2a28-1377-f2bb-73b4321f2327', 2, 2, 'Daniel', 'Paramo', '10/20/2016', '1992-09-19', 'daniel@mail.com', 'contrasena_vacio', 1),
 ('d276c89d-5b5c-a0b9-bea0-d4f740932bc1', 5, 24, 'Camila', 'Suarez', '10/20/2016', '1980-08-05', 'camila@mail.com', 'contrasena_vacio', 1),
-('d28cc9d3-a496-f3fa-5eb3-e60967eb2843', 3, 2, 'Edwin', 'silva', '10/20/2016', '2013-11-30', 'daniel@mail.com', 'contrasena_vacio', 1);
+('d28cc9d3-a496-f3fa-5eb3-e60967eb2843', 3, 2, 'Edwin', 'silva', '10/20/2016', '2013-11-30', 'daniel@mail.com', 'contrasena_vacio', 1),
+('e673b705-418c-a482-4de4-fd3ac05941e8', 11, 24, 'Hola', 'Paola', '10/20/2016', '2000-02-01', '14144@mail.com', 'contrasena_vacio', 0);
 
 -- --------------------------------------------------------
 
@@ -113,12 +118,14 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`idusuario`, `nombre`, `usuario`, `clave`, `email`, `fecha`, `fecha_tiempo`) VALUES
 (2, 'Luis', 'luis', '$2a$10$AuOPFoq4KP7.pYNHJvGNSO/vHdtCSmqvaBdflRKbefRneIRPkUry2', 'luis@mail.com', '10/16/2016', NULL),
-(19, 'aa', 'asdadsada', '$2a$10$qrp1NL9diBmUF8Ik7TYpjOpPRi.Lxq/EX4JY.l1nbrVw49oJ.UfQC', 'asdasd@mail.com', '10/17/2016', NULL),
-(20, 'lol', 'lol', '$2a$10$sIYO3U1YE//HLrxWAMh5p.UrukM0AOSOJzrAErFo4WgZ91xDqq3Pe', 'lol@lol.com', '10/18/2016', NULL),
+(19, 'aa', 'asdadsada', '$2a$10$sEBacc3xV.IxZzGhlXCFluQ.MHrhhnEIIZMLakkVkgV57.UwhiMxC', 'luis.udec.sanchez@hotmail.com', '10/17/2016', NULL),
+(20, 'lol', 'lol', '$2a$10$tpopzKj5kgRadU2ccmibAONzXxTcycUWaWdfdPi1HcqYu2EQtarVm', 'luis.udec.sanchez@gmail.com', '10/18/2016', NULL),
 (22, 'daniel', 'daniel', '$2a$10$79PGoIdfQdcHGBupT76XFuEPyBmskzGgPa0jVdMsm54UofMWxo.56', 'daparamo@mail.com', '10/18/2016', NULL),
 (23, 'da', 'da', '$2a$10$eFNCsSw.yJIdGgDcjvV1d.Oj15PRD0xvhKd0jY7UN0dDTqMIi7ypC', 'da@mail.com', '10/19/2016', NULL),
 (24, 'Medico 1', 'medico1', '$2a$10$BLbigrcNPTkRS3H3vJ4e5ODZbD7l3dPNusSpDN4XQImM0UpHhMzKi', 'medico1@mail.com', '10/20/2016', NULL),
-(25, 'Medico2', 'medico2', '$2a$10$M2WMSuf.JKJ3b7foDn5zMOPnbcKbzhyDXudKoQjbx7RPYNvgQz.de', 'medico2@mail.com', '10/20/2016', NULL);
+(25, 'Medico2', 'medico2', '$2a$10$M2WMSuf.JKJ3b7foDn5zMOPnbcKbzhyDXudKoQjbx7RPYNvgQz.de', 'medico2@mail.com', '10/20/2016', NULL),
+(26, 'Felipe', 'felipe', '$2a$10$dITXilio4meJ/RfXXSqGIOg936X6A5K7SV8uYbnQTk3N4Nhc5YxjC', 'lopez@mail.com', '10/20/2016', NULL),
+(27, 'undefined', 'undefined', '$2a$10$MpptLsOf/WUmjxXyYNLh2uBOgniccx/q.ii8WWID3JakRc8xsuj5a', 'sdad', '10/20/2016', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -155,7 +162,7 @@ ALTER TABLE `todos`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `idusuario` int(100) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `idusuario` int(100) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -2,3 +2,5 @@ La aplicacion tiene 4 vistas funcionando login, registro, menu y registro pacien
 
 
 Edita paciente y elimina logicamnete pacientes. Toca restablecer la base de datos ya no se estalla tan facil la parte deñ registro y actualizar datos se estlla en el console.log("Se estalla"); en la linea  347 de rutas.js
+
+--> Se realizo el restablecer contraseña y funciona perfecto;
