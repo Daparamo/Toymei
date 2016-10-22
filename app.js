@@ -95,10 +95,15 @@ var express 		= 	require("express"),
 	app.get("/registrolol", rutas.registro);
 	//Para guardar el usuario...
 	app.post("/registrore", rutas.registroPost);
+
 	//Olvido contraseña
+
 	app.get("/olvido_contrasena", rutas.olvido_pass);
+
 	//Validar correo para recuperar contraseña
+
 	app.post("/validar_correo", rutas.validar_correo);
+
 	//Mostrar vista registrar pacientes
 	app.get("/Mostrar_vista_pacientes", rutas.vista_pacientes);
 
@@ -109,16 +114,33 @@ var express 		= 	require("express"),
 	//Traer todas los pacientes x medico
 	app.get('/traerPersonas', rutas.traerPersonas);
 
-	app.post('/crearEjercicio', rutas.crearEjercicio);
+
 
 	//Traer Email y Passwod de paciente
 	app.post('/traerEmailandPass', rutas.traerEmailandPass);
 
+
+
+
+
+
+
+
+
+
+
+
 	//Actualizar registro de usuario
+
 	app.put('/updateUsuario', rutas.updateRegistro);
+
 
 	//Eliminar de forma logica el registro de un paciente
 	app.put('/eliminarUsuario', rutas.eliminarUsuario);
+
+
+
+
 
 	//Eliminar una tarea..
 	app.delete('/deleteTask/:id', rutas.deleteTask);
@@ -126,6 +148,8 @@ var express 		= 	require("express"),
 	app.get('/getTask/:id', rutas.getTask);
 	//Para realizar el envío de un email..
 	
+
+
 	app.post('/mail', function (req, res, next)
 	{
 		
@@ -161,19 +185,9 @@ var express 		= 	require("express"),
 				  status  : true,
 				  correo  : req.body.correo
 				});
-
 			});
 		 };
-	
-	
-	//Para cualquier url que no cumpla la condición...
-	app.get("*", rutas.notFound404);
-	//Iniciar el Servidor...
-	var server = app.listen(puerto, function(err) {
-	   if(err) throw err;
-	   var message = 'Servidor corriendo en @ http://localhost:' + server.address().port;
-	   console.log(message);
-	});
+
 
 		 if (req.body.tipo === "restablecer_password")
 		 {
@@ -208,6 +222,10 @@ var express 		= 	require("express"),
 			});
 		}
 	});
+
+
+
+
 
 
 	//Para cualquier url que no cumpla la condición...

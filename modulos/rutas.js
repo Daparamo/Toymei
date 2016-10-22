@@ -40,6 +40,9 @@ var index = function(req, res)
     }
 };
 
+
+
+
 var vista_pacientes =  function(req, res)
 {
 	var user = req.user;
@@ -61,6 +64,16 @@ var AsignarEjercicio =  function(req, res)
 	});
 
 };
+
+
+
+
+
+
+
+
+
+
 
 var login = function(req, res)
 {
@@ -129,6 +142,12 @@ var olvido_pass =  function(req, res)
 
 };
 
+
+
+
+
+
+
 var registroPost = function(req, res, next)
 {
     //Buscar si el nombre de usuario o correo ya existen...
@@ -146,9 +165,12 @@ var registroPost = function(req, res, next)
 									error: 'Nombre de usuario o correo ya existe',
 									data : [data.nombre, data.correo, data.username]
 								});
-		}		
+		}
+
+		
 		else
 		{
+
             var password = bcrypt.hashSync(data.password);
 			sql = "INSERT INTO users (nombre, usuario, clave, email, fecha) " +
 					  "VALUES ('" + data.nombre + "', '" + data.username + "', " +
@@ -165,11 +187,15 @@ var registroPost = function(req, res, next)
 	});
 };
 
+
 var createRegistro = function (req, res)
 {
-	if(req.isAuthenticated())
-	{	
-		crearUsuario(req.body,req.user[0].idusuario, function(err, data, status){
+
+
+	
+	if(req.isAuthenticated()){
+	
+	crearUsuario(req.body,req.user[0].idusuario, function(err, data, status){
 		var result = {
 						usuario:data,
 						status: status
@@ -178,10 +204,13 @@ var createRegistro = function (req, res)
 			//console.log(result);
 		});
 	}
+
 	else{
 		res.status(401).send("Acceso no autorizado");
 	}
+
 };
+
 
 var updateRegistro = function (req, res)
 {
@@ -205,6 +234,7 @@ var updateRegistro = function (req, res)
 	}
 };
 
+
 var traerPersonas =  function(req, res)
 {
 	//Traer todos los To-Do's...
@@ -213,6 +243,10 @@ var traerPersonas =  function(req, res)
 		//var data= req.body;
 		var usuario = req.user[0].idusuario;
 		//var data req.body;
+
+
+
+
 		db.queryMysql("select * from pacientes where idusuario = " + usuario +" and eliminado = 0", function(err, data){
 			if (err) throw err;
 			//Retorneme data
@@ -225,29 +259,6 @@ var traerPersonas =  function(req, res)
 	}
 };
 
-
-var crearEjercicio =  function(req, res)
-{
-	//Traer todos los To-Do's...
-	if(req.isAuthenticated())
-	{
-		var data= req.body;
-		console.log(data);
-		var usuario = req.user[0].nombre;
-		var sql = "select * from pacientes where nombre = '"+data.nombre+"' and eliminado = 0";
-		console.log(sql);		
-		//var data req.body;
-		db.queryMysql(sql, function(err, data){
-			if (err) throw err;			
-			//Retorneme data
-			res.json(data);
-		});
-	}
-	else
-	{
-		res.status(401).send("Acceso no autorizado");
-	}
-};
 
 var deleteTask = function(req, res)
 {
@@ -292,8 +303,13 @@ var notFound404 = function(req, res)
 	res.status(404).send("Página no encontrada :( en el momento");
 };
 
+
+
+
+
 var EditarUsuario = function(res,req,data, idusuario, callback)
-{	
+{
+	
     var sql = "select id as id_bd from pacientes where eliminado = 0  and (cedula = '"+(data.cedula)+"' or correo = '"+(data.correo)+"') and idusuario = '"+idusuario+"'";
 	
  	//console.log(sql)
@@ -382,8 +398,12 @@ var EditarUsuario = function(res,req,data, idusuario, callback)
 	});
 };
 
+
+
+
 var validar_correo = function(req, res)
 {
+
 	data = req.body;
 	//console.log("El correo es: " + data.correo);
 	var status;
@@ -413,6 +433,7 @@ var validar_correo = function(req, res)
 						})
 			});
 		}
+
 		else
 		{
 			//console.log("El correo "+ data.correo +" NO existe.");
@@ -431,6 +452,9 @@ var validar_correo = function(req, res)
 
 	
 };
+
+
+
 
 var traerEmailandPass = function(req, res)
 {
@@ -496,8 +520,32 @@ var traerEmailandPass = function(req, res)
 	
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function actualizarUser (res,req,data) 
-{	
+{
+	
 	if(req.isAuthenticated())
 	{
 
@@ -523,6 +571,11 @@ function actualizarUser (res,req,data)
 		});
 	}
 }
+
+
+
+
+
 
 var eliminarUsuario = function (req,res)
 {
@@ -551,6 +604,7 @@ var eliminarUsuario = function (req,res)
 
 }
 
+
 var crearUsuario = function(data, idusuario, callback)
 {
 
@@ -558,23 +612,41 @@ var crearUsuario = function(data, idusuario, callback)
     var sql = "select count(*) as numero from pacientes " +
 			   "where eliminado = 0  and (" +
 			   		  "cedula = "+(data.cedula)+" or "+
-			   		   "correo = '"+(data.correo)+"')";			   		
+			   		   "correo = '"+(data.correo)+"')";
+
+
+
+
+			   		
 	db.queryMysql(sql, function(err, response)
 	{
+
+		
+	
+
+		
+
 		if(response[0].numero !== 0)
 		{ 
 			//El registro existe
 
 			callback("","",false);
+
 		}
+
 		else
 		{
+
             var sql = "";
 			var password = "contrasena_nueva" ;
 			var eliminado = false;
-			//se esta creando un nuevo paciente...			
+			//se esta creando un nuevo paciente...
+			
 			data.id = guid();
-			data.date = fechaActual;	
+			data.date = fechaActual;
+
+
+			
 							sql = "INSERT INTO pacientes (id, cedula, idusuario, nombre, apellido, date, nacimiento, correo, password, eliminado) " +
 							  "VALUES ('" + data.id  		 + "', '" + 
 							  				data.cedula      + "', '" +
@@ -585,7 +657,10 @@ var crearUsuario = function(data, idusuario, callback)
 							  		   		data.nacimiento	 + "', '" + 
 							  		   		data.correo	 	 + "', '" +
 							  		   		password	 	 + "', '" +    
-							  		   		eliminado         + "')";			
+							  		   		eliminado         + "')";
+			
+
+				
 			db.queryMysql(sql, function(err, response){
 				if (err) throw err;
 				callback(err, data,true);
@@ -593,6 +668,13 @@ var crearUsuario = function(data, idusuario, callback)
 		}
 	});
 };
+
+
+
+
+
+
+
 
 //Exportar las rutas...
 module.exports.index = index;
@@ -605,29 +687,41 @@ module.exports.registroPost = registroPost;
 //Olvido su contraseña
 module.exports.olvido_pass = olvido_pass;
 
+
+
 module.exports.createRegistro = createRegistro;
+
 
 module.exports.EditarUsuario = EditarUsuario;
 
 module.exports.crearUsuario = crearUsuario;
 
+
 //Get para traer todas las personas x medico
 module.exports.traerPersonas = traerPersonas;
 
-module.exports.crearEjercicio = crearEjercicio;
 //UPDATE actualizar un registro de paciente
 
 module.exports.updateRegistro = updateRegistro;
 
+
 //Eliminar registro
 module.exports.eliminarUsuario = eliminarUsuario;
 
+
 //Post para validar el correo
 module.exports.validar_correo = validar_correo;
+
+
+
 module.exports.vista_pacientes = vista_pacientes;
 module.exports.AsignarEjercicio = AsignarEjercicio;
 
+
 module.exports.traerEmailandPass = traerEmailandPass;
+
+
+
 
 module.exports.deleteTask = deleteTask;
 module.exports.getTask = getTask;
