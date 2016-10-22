@@ -1,0 +1,104 @@
+body
+{
+	background: #2E3740;
+	color: #ec3030;
+	font-family: "Open Sans", sans-serif;
+}
+
+a{
+	color: white;
+}
+
+img
+{
+	cursor: pointer;
+}
+
+
+
+
+.titulo
+{
+	color: white;
+	font-weight: bold;
+	font-size: 2em;
+	text-align: center;
+	margin-bottom: 20px;
+	text-shadow: 2px 2px black;
+}
+
+a
+{
+	text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+hr
+{
+	border: 1px solid #435160;
+}
+
+
+
+
+#titulo
+{
+	margin: 15px;
+	float: left;
+	padding-left: 5px;
+	width: 90%;
+	color: white;
+	font-size: 1.5em
+}
+
+
+#logout
+{
+	padding-right: 5px;
+	padding-left: 5px;
+}
+
+.iconHeader
+{
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border: 2px solid white;
+	border-radius: 50%;
+	margin-left: 50px;
+}
+
+
+#VerReportes
+{
+	margin-left: 4%;
+	display: inline-block;
+	width: 30%;
+	text-align: center;
+}
+#AsignarEjercicio
+{
+	display: inline-block;
+	width: 30%;
+	text-align: center;
+}
+#Pacientes
+{
+	display: inline-block;
+	width: 30%;
+	text-align: center;
+	margin-right: 4%;
+}
+
+.tamano_imagenes
+{
+	width: 250px;
+	height: 250px;
+}
