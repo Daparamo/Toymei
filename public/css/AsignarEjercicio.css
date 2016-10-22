@@ -14,7 +14,6 @@ img
 	cursor: pointer;
 }
 
-
 #cajon1
 {
 	float:left;
@@ -54,10 +53,10 @@ a
 	margin-left: -175px;
 }
 
-
 input[type="text"], input[type="password"], input[type="email"], input[type="date"], input[type="number"], input[type="search"], select {
- width: 33%;
+ width: 32%;
  padding: 20px 0px;
+ margin-right: 10px;
  background: transparent;
  border: 0;
  border-bottom: 1px solid #435160;
@@ -68,11 +67,10 @@ input[type="text"], input[type="password"], input[type="email"], input[type="dat
 
 input[type="search"]
 {
-	width: 99%;
+	width: 95%;
+    margin-bottom: 15px;
+    margin-left: -14px;
 }
-
-
-
 
 #guarda {
  background: #1FCE6D;
@@ -89,8 +87,6 @@ input[type="search"]
  background: #16aa56;
  animation-name: shake;
 }
-
-
 
 ::-webkit-input-placeholder {
  color: #435160;
@@ -127,19 +123,35 @@ hr
 	font-size: 1.5em
 }
 
+#header
+{
+	margin: 0px auto !important;	
+}
 
 #logout
 {
-	padding-right: 5px;
-	padding-left: 5px;
+    position: absolute;
+    margin-left: 10px;
+    margin-top: 5px;
+    border: 2px solid;
+    border-radius: 50%;
+    padding: 5px; 
 }
 
-.iconHeader
+#atras
 {
-	padding-top: 5px;
-	padding-bottom: 5px;
-	border: 2px solid white;
-	border-radius: 50%;
-	margin-left: 50px;
+	margin-top: 5px;
+	width: 30px;
+    padding: 5px;
+    border: 2px solid;
+    border-radius: 50%;
+    margin-left: 433px;
 }
 
+
+#ButtonHeader
+{
+	position:absolute;
+	display: inline-block;
+	margin-right: 2px;
+}
