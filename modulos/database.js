@@ -9,7 +9,7 @@ exports.conectaDatabase = function()
       host     	: 'localhost',
       user     	: 'root',
       password 	: '',
-      database 	: 'patillas'
+      database 	: 'toymei'
     });
     conexion.connect();
 };
