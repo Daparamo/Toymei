@@ -612,55 +612,34 @@ var crearUsuario = function(data, idusuario, callback)
     var sql = "select count(*) as numero from pacientes " +
 			   "where eliminado = 0  and (" +
 			   		  "cedula = "+(data.cedula)+" or "+
-			   		   "correo = '"+(data.correo)+"')";
-
-
-
-
-			   		
+			   		   "correo = '"+(data.correo)+"')";	
 	db.queryMysql(sql, function(err, response)
 	{
-
-		
-	
-
-		
-
 		if(response[0].numero !== 0)
 		{ 
 			//El registro existe
 
 			callback("","",false);
-
 		}
-
 		else
 		{
-
             var sql = "";
 			var password = "contrasena_nueva" ;
 			var eliminado = false;
-			//se esta creando un nuevo paciente...
-			
+			//se esta creando un nuevo paciente...			
 			data.id = guid();
 			data.date = fechaActual;
-
-
-			
-							sql = "INSERT INTO pacientes (id, cedula, idusuario, nombre, apellido, date, nacimiento, correo, password, eliminado) " +
-							  "VALUES ('" + data.id  		 + "', '" + 
-							  				data.cedula      + "', '" +
-							  		        idusuario      	 + "', '" +
-							  		   		data.nombre 	 + "', '" +
-							  		   		data.apellido	 + "', '" +
-							  		   		data.date		 + "', '" +  
-							  		   		data.nacimiento	 + "', '" + 
-							  		   		data.correo	 	 + "', '" +
-							  		   		password	 	 + "', '" +    
-							  		   		eliminado         + "')";
-			
-
-				
+			sql = "INSERT INTO pacientes (id, cedula, idusuario, nombre, apellido, date, nacimiento, correo, password, eliminado) " +
+			  "VALUES ('" + data.id  		 + "', '" + 
+			  				data.cedula      + "', '" +
+			  		        idusuario      	 + "', '" +
+			  		   		data.nombre 	 + "', '" +
+			  		   		data.apellido	 + "', '" +
+			  		   		data.date		 + "', '" +  
+			  		   		data.nacimiento	 + "', '" + 
+			  		   		data.correo	 	 + "', '" +
+			  		   		password	 	 + "', '" +    
+			  		   		eliminado         + "')";				
 			db.queryMysql(sql, function(err, response){
 				if (err) throw err;
 				callback(err, data,true);
@@ -668,13 +647,6 @@ var crearUsuario = function(data, idusuario, callback)
 		}
 	});
 };
-
-
-
-
-
-
-
 
 //Exportar las rutas...
 module.exports.index = index;
@@ -687,10 +659,7 @@ module.exports.registroPost = registroPost;
 //Olvido su contraseña
 module.exports.olvido_pass = olvido_pass;
 
-
-
 module.exports.createRegistro = createRegistro;
-
 
 module.exports.EditarUsuario = EditarUsuario;
 
@@ -704,24 +673,16 @@ module.exports.traerPersonas = traerPersonas;
 
 module.exports.updateRegistro = updateRegistro;
 
-
 //Eliminar registro
 module.exports.eliminarUsuario = eliminarUsuario;
-
 
 //Post para validar el correo
 module.exports.validar_correo = validar_correo;
 
-
-
 module.exports.vista_pacientes = vista_pacientes;
 module.exports.AsignarEjercicio = AsignarEjercicio;
 
-
 module.exports.traerEmailandPass = traerEmailandPass;
-
-
-
 
 module.exports.deleteTask = deleteTask;
 module.exports.getTask = getTask;

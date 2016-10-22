@@ -119,17 +119,6 @@ var express 		= 	require("express"),
 	//Traer Email y Passwod de paciente
 	app.post('/traerEmailandPass', rutas.traerEmailandPass);
 
-
-
-
-
-
-
-
-
-
-
-
 	//Actualizar registro de usuario
 
 	app.put('/updateUsuario', rutas.updateRegistro);
@@ -138,22 +127,14 @@ var express 		= 	require("express"),
 	//Eliminar de forma logica el registro de un paciente
 	app.put('/eliminarUsuario', rutas.eliminarUsuario);
 
-
-
-
-
 	//Eliminar una tarea..
 	app.delete('/deleteTask/:id', rutas.deleteTask);
 	//Mostrar sólo una tarea...
 	app.get('/getTask/:id', rutas.getTask);
 	//Para realizar el envío de un email..
 	
-
-
 	app.post('/mail', function (req, res, next)
-	{
-		
-
+	{		
 		if (req.body.tipo === "informar_paciente")
 		 {
 
@@ -222,11 +203,6 @@ var express 		= 	require("express"),
 			});
 		}
 	});
-
-
-
-
-
 
 	//Para cualquier url que no cumpla la condición...
 	app.get("*", rutas.notFound404);

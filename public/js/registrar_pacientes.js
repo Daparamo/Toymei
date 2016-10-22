@@ -62,17 +62,6 @@ function enviarCorreo (callback)
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
 function traerPersonas (callback)
  {        
         $.ajax(
@@ -141,10 +130,6 @@ function traerPersonas (callback)
 
         var data = {};
         data.cedula = cedula;
-        
-
-
-
         $.ajax(
         {
             url         : "traerEmailandPass",
@@ -155,14 +140,9 @@ function traerPersonas (callback)
         }).done(function(data)
         {
          //   console.log(data);
-            callback(data);
-            
-            
-
+            callback(data);            
         }).error(function(request, status, error)
-        {
-            
-
+        {            
             sweetAlert("Oops...", request.responseText, "error");
                 var delay = 2000;
                                     setTimeout(function(){ window.location = "/" }, delay);
@@ -474,30 +454,16 @@ function traerPersonas (callback)
                                     });
 
                                     traerPersonas();
-                                    limpiaCampos(campos);
-                                   
-                                    
-                                    
+                                    limpiaCampos(campos);                                
                                 }
 
                                 else
                                 {
                                     swal("Error!", "No se ha podido enviar el email a: " + data.correo, "error");
                                 }
-                            });
-
-                        
-                        
+                            });                                        
                     }
-                    });
-                    
-                    
-
-
-
-
-
-
+                    });                            
                     }
               });
             };             
