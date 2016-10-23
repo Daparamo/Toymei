@@ -168,16 +168,3 @@ hr
     background: #4caf50;
     color: black;
 }
-#crearEjercicio :hover
-{
-	width: 100%;
-    height: 30px;
-    margin-top: 5px;
-    padding-top: 15px;
-    display: inline-block;
-    cursor: pointer;
-    border: 2px solid black;
-    border-radius: 30px;
-    background: #47a94b;
-    color: black;
-}
