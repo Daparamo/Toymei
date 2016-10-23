@@ -6,12 +6,7 @@ html(lang='es')
       meta(name='viewport', content='initial-scale=1, maximum-scale=1, user-scalable=no')
       title!= titulo
       link(rel='stylesheet', type='text/css', href='css/AsignarEjercicio.css')
-      script(src='js/three.js')          
-      script(src='js/OrbitControls.js')
-      script(src='js/TransformControls.js')
-      script(src='js/DragControls.js')
-      script(src='js/stats.min.js')
-      script(src='js/Cubitos.js')    
+      
       script(src='js/sweetalert.min.js')
       script(src='js/jquery-1.11.3.min.js')
       script(src='js/AsignarEjercicio.js')      
@@ -20,8 +15,7 @@ html(lang='es')
     style.
       body {      
       overflow: hidden;
-      }
-
+      }    
     center
       #header
         span.titulo Asignar Ejercicio
@@ -35,9 +29,9 @@ html(lang='es')
           option(value='0') Ejercicio
           option(value='1') Estiramiento
         input#NombreEjercicio(name='NombreEjercicio', type='text', placeholder='Nombre del ejercicio')
-        input#TiempoEjercicio(name='tiempoEjercicio', type='number', min='0', placeholder='Tiempo en segundos')
-        input#RepeticionesEjercicio(name='repeticionesEjercicio', min='0', type='number', placeholder='Numero de repeticiones')
-        button#Enviar(name='Enviar') asignar Ejercicio
+        input#tiempoEjercicio(name='tiempoEjercicio', type='number', min='0', placeholder='Tiempo en segundos')
+        input#repeticionesEjercicio(name='repeticionesEjercicio', min='0', type='number', placeholder='Numero de repeticiones')
+        #crearEjercicio(name='crearEjercicio') Asignar Ejercicio
     br
     #cajon1
       input(type='search', placeholder='Search')

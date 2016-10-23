@@ -62,6 +62,78 @@ function enviarCorreo (callback)
 
     }
 
+
+$('#buscar').change(function(event) 
+{
+
+if ($('#buscar').val() !== "")
+    {
+
+    traerFiltro(function(data)
+                    {
+
+                     //   console.log(data);
+                       // imprimeUsuarios(data);
+                        for (var i = 0; i < data.length; i++) 
+                        {;
+                            console.log(data[0]);
+                        };
+
+
+
+
+
+                    });
+    }
+else
+{
+    traerPersonas();
+}
+
+
+});
+
+
+ function traerFiltro (callback) 
+    {
+        var data = {};
+        data.search = $('#buscar').val();
+            
+       // console.log(data);  
+
+        $.ajax(
+        {
+            url         : "traerFiltro",
+            type        : "POST",
+            data        : JSON.stringify(data),
+            dataType    : "json",
+            contentType: "application/json; charset=utf-8"
+        }).done(function(data)
+        {
+           // imprimeUsuarios(data);
+            callback(data);
+
+        }).error(function(request, status, error)
+        {            
+            sweetAlert("Oops...", request.responseText, "error");
+            var delay = 3000;
+            setTimeout(function(){ window.location = "/" }, delay);
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function traerPersonas (callback)
  {        
         $.ajax(

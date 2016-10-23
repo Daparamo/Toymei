@@ -6,17 +6,18 @@ $(function()
     
 //Traer Personas
 //    
-    $("#asignarEjercicio").click(function(event) {
-        alert("lol");
-        crearEjercicio();
+
+    $("#crearEjercicio").click(function(event) {
+        crearEjercicio("","")
     });
-    function crearEjercicio (callback)
+    function crearEjercicio (data,callback)
     {        
+        console.log("lol");
         var dataEjercicio = {};
         dataEjercicio.nombreEjercicio = $("#NombreEjercicio").val();
         dataEjercicio.repeticiones = $("#repeticionesEjercicio").val();
-        dataEjercicio.repeticiones = $("#tiempoEjercicio").val();        
-        
+        dataEjercicio.tiempo = $("#tiempoEjercicio").val();        
+        console.log(dataEjercicio);
         $.ajax(
         {
             url         : "crearEjercicio",
@@ -26,7 +27,7 @@ $(function()
             contentType: "application/json; charset=utf-8"
         }).done(function(data)
         { 
-            console.log(data)
+            //console.log(data)
             //listadoPersonas=data;
            //console.log(listadoPersonas);            
            //imprimeUsuarios(listadoPersonas);  
@@ -52,7 +53,7 @@ $(function()
         { 
             //console.log(data)
             listadoPersonas=data;
-           console.log(listadoPersonas);            
+           //console.log(listadoPersonas);            
            imprimeUsuarios(listadoPersonas);  
         }).error(function(request, status, error)
         {

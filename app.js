@@ -96,8 +96,11 @@ var express 		= 	require("express"),
 	//Para guardar el usuario...
 	app.post("/registrore", rutas.registroPost);
 
-	//Olvido contraseña
+	//Traer personas filtradas
+	app.post("/traerFiltro", rutas.traerFiltro);
 
+
+	//Olvido contraseña
 	app.get("/olvido_contrasena", rutas.olvido_pass);
 
 	//Validar correo para recuperar contraseña
@@ -108,9 +111,13 @@ var express 		= 	require("express"),
 	app.get("/Mostrar_vista_pacientes", rutas.vista_pacientes);
 
 	app.post('/createRegistro123', rutas.createRegistro);
+	//*************EJERCICIO********************
 	//Mostrar Vista AsignarEjercicio
 	app.get("/AsignarEjercicio", rutas.AsignarEjercicio);
 
+	//Crear Ejercicio 
+	app.post("/crearEjercicio", rutas.crearEjercicio);	
+	//******************************************
 	//Traer todas los pacientes x medico
 	app.get('/traerPersonas', rutas.traerPersonas);
 
