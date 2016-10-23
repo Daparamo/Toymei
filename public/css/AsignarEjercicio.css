@@ -54,7 +54,7 @@ a
 }
 
 input[type="text"], input[type="password"], input[type="email"], input[type="date"], input[type="number"], input[type="search"], select {
- width: 32%;
+ width: 24%;
  padding: 20px 0px;
  margin-right: 10px;
  background: transparent;
@@ -154,4 +154,30 @@ hr
 	position:absolute;
 	display: inline-block;
 	margin-right: 2px;
+}
+#crearEjercicio
+{
+	width: 15%;
+    height: 30px;
+     margin-top: 5px;
+    padding-top: 15px;
+    display: inline-block;
+    cursor: pointer;
+    border: 2px solid black;
+    border-radius: 30px;
+    background: #4caf50;
+    color: black;
+}
+#crearEjercicio :hover
+{
+	width: 100%;
+    height: 30px;
+    margin-top: 5px;
+    padding-top: 15px;
+    display: inline-block;
+    cursor: pointer;
+    border: 2px solid black;
+    border-radius: 30px;
+    background: #47a94b;
+    color: black;
 }
