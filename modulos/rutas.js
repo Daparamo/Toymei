@@ -51,6 +51,23 @@ var vista_pacientes =  function(req, res)
 
 };
 
+
+
+var change_password =  function(req, res)
+{
+	var user = req.user;
+	res.render("change_password", 
+	{
+		titulo 	:  	"Cambiar contraseña"
+		
+	});
+
+};
+
+
+
+
+
 var AsignarEjercicio =  function(req, res)
 {
 	var user = req.user;
@@ -182,6 +199,51 @@ var createRegistro = function (req, res)
 	}
 };
 
+
+
+var cambiar_password= function (req, res)
+{	
+	if(req.isAuthenticated())
+	{
+
+		var usuario = req.user[0];
+		var data = req.body;
+		
+		//console.log("Contraseña nueva: " + data.password);
+		
+		var sql = "update users SET clave = '" + bcrypt.hashSync(data.password) + "' WHERE idusuario = '"+ usuario.idusuario + "'";
+		//console.log(sql);
+			db.queryMysql(sql, function(err, response)
+			{
+				if (err) throw err;
+				
+				var delay = 4000;
+                                    setTimeout(function(){ 
+
+                                    	res.render("menu", 
+				{
+									titulo 	:  	"Menu",
+									usuario	:	"Bienvenido " + usuario.nombre
+				});  
+                                    }, delay);
+				
+				//res.json(response)
+			});
+	}
+	
+	else
+	{
+		res.status(401).send("Acceso no autorizado");
+	}
+};
+
+
+
+
+
+
+
+
 var updateRegistro = function (req, res)
 {
 
@@ -204,27 +266,7 @@ var updateRegistro = function (req, res)
 	}
 };
 
-var traerFiltro =  function(req, res)
-{
-	if(req.isAuthenticated())
-	{
-		var usuario = req.user[0].idusuario;
-		var data = req.body;
-		console.log("Quitar Fecha de naciomiento: " + data);
 
-		var sql = "select cedula as cedula, nombre as nombre, apellido as apellido, correo as correo, nacimiento as fecha_nacimiento  from pacientes where idusuario = " + usuario +" and eliminado = 0 or ( cedula = '"+ data.search + "' or nombre = '" + data.search + "' or apellido = '" + data.search + "' or correo = '" + data.search +"' )"
-		console.log(sql);
-		db.queryMysql(sql, function(err, response){
-			if (err) throw err;
-			//Retorneme data
-			res.json(response);
-		});
-	}
-	else
-	{
-		res.status(401).send("Acceso no autorizado");
-	}
-};
 
 var traerPersonas =  function(req, res)
 {
@@ -245,6 +287,41 @@ var traerPersonas =  function(req, res)
 		res.status(401).send("Acceso no autorizado");
 	}
 };
+
+
+
+var traerDatos_Medico =  function(req, res)
+{
+	
+	if(req.isAuthenticated())
+	{
+		var usuario = req.user[0].idusuario;
+		db.queryMysql("select nombre as nombre, usuario as usuario, email as email from users where idusuario = " + usuario, function(err, response){
+			if (err) throw err;
+			//Retorneme data
+			res.json({ 
+						nombre 		: response[0].nombre,
+						usuario 	: response[0].usuario,
+						email 		: response[0].email
+					});
+		});
+	}
+	else
+	{
+		res.status(401).send("Acceso no autorizado");
+	}
+};
+
+
+
+
+
+
+
+
+
+
+
 
 var crearEjercicio =  function(req, res)
 {
@@ -326,21 +403,7 @@ var EditarUsuario = function(res,req,data, idusuario, callback)
 
 		var tamano=response.length;
 		console.log("Tamaño " + response.length);
-		/*
-		console.log("ID que viene de la vista: " + data.id);
-		if (tamano === 1) 
-			{
-				console.log(response[0]);
-			};
-
-		if (tamano === 2) 
-			{
-				console.log(response[0]);
-				console.log(response[1])
-			};
-		*/
-		
-
+			
 		if (tamano !== 0) 
 		{
 
@@ -380,7 +443,7 @@ var EditarUsuario = function(res,req,data, idusuario, callback)
 		{
             var sql = "";
 			
-			sql = "UPDATE pacientes SET " + "cedula" 	 + " = " + data.cedula + ", " +
+			sql = "UPDATE pacientes SET " + "cedula" 	 + " = '" + data.cedula + "', " +
 												"nombre" 	 + " = '" + data.nombre + "', " +
 												"apellido" 	 + " = '" + data.apellido + "', " +
 												"nacimiento" + " = '" + data.nacimiento + "', " +
@@ -400,20 +463,26 @@ var EditarUsuario = function(res,req,data, idusuario, callback)
 var validar_correo = function(req, res)
 {
 
-	data = req.body;
+	var data = req.body;
 	//console.log("El correo es: " + data.correo);
 	var status;
-	var sql = "select email as email from users where email = '" + data.correo + "'";
+		
+	var sql = "select usuario as usuario, nombre as nombre, email as email from users where email = '" + data.correo + "'";
 	//console.log(sql)
 	db.queryMysql(sql, function(err, response)
 	{
 		var encontro=response.length;
+
 		//console.log("Encontro " + response.length);
 		if (encontro === 1) 
 		{
+			var nombre = response[0].nombre;
+			var usuario = response[0].usuario;
 			//console.log("El correo "+ data.correo+" si existe.");
 			status=true;
 			var contrasena_nueva = guid();
+			//console.log("Se va enviar a este correo: " + data.correo);
+
 			var sql = "update users SET clave = '" + bcrypt.hashSync(contrasena_nueva) + "' WHERE email = '"+ data.correo + "'";
 			//console.log(sql);
 			db.queryMysql(sql, function(err, response)
@@ -422,7 +491,9 @@ var validar_correo = function(req, res)
 				res.json({
 							status 			 : status,
 							contrasena_nueva : contrasena_nueva,
-							correo 			 : data.correo
+							correo 			 : data.correo,
+							nombre       	 : nombre,
+							usuario       	 : usuario
 						})
 			});
 		}
@@ -509,7 +580,7 @@ function actualizarUser (res,req,data)
 
 		 var sql = "";
 			
-			sql = "UPDATE pacientes SET " + "cedula" 	 + " = " + data.cedula + ", " +
+			sql = "UPDATE pacientes SET " + "cedula" 	     + " = '" + data.cedula + "', " +
 												"nombre" 	 + " = '" + data.nombre + "', " +
 												"apellido" 	 + " = '" + data.apellido + "', " +
 												"nacimiento" + " = '" + data.nacimiento + "', " +
@@ -566,7 +637,7 @@ var crearUsuario = function(data, idusuario, callback)
 	
     var sql = "select count(*) as numero from pacientes " +
 			   "where eliminado = 0  and (" +
-			   		  "cedula = "+(data.cedula)+" or "+
+			   		  "cedula = '"+(data.cedula)+"' or "+
 			   		   "correo = '"+(data.correo)+"') and idusuario = " + idusuario;
 
 	console.log(sql)
@@ -625,7 +696,15 @@ module.exports.crearUsuario = crearUsuario;
 
 
 
-module.exports.traerFiltro = traerFiltro;
+
+//Exportar metodo para rendereizar la vista cambiar contraseña
+module.exports.change_password = change_password;
+
+//Exportar metodo para UPDATE de contraseña
+module.exports.cambiar_password = cambiar_password;
+
+//Enviar los datos del medico a la vista
+module.exports.traerDatos_Medico = traerDatos_Medico;
 
 
 

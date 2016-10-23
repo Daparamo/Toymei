@@ -64,7 +64,17 @@ hr
 {
 	padding-right: 5px;
 	padding-left: 5px;
+
 }
+
+
+#config
+{
+	padding-right: 5px;
+	padding-left: 5px;
+}
+
+
 
 .iconHeader
 {
@@ -102,3 +112,5 @@ hr
 	width: 250px;
 	height: 250px;
 }
+
+

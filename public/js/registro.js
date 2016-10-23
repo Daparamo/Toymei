@@ -8,7 +8,7 @@ $(function()
         {
             if($("#" + campos[i]).val().length === 0)
             {
-                sweetAlert("Completar campos", "Por favor completa el caaaampo " + campos[i], "error");
+                sweetAlert("Completar campos", "Por favor completa el campo " + campos[i], "error");
                 enviaForm = false;
                 break;
             }

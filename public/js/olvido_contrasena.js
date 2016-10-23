@@ -37,6 +37,8 @@ $(function()
         data.correo = datos.email;
         data.contrasena = datos.contrasena;
         data.tipo = datos.tipo;
+        data.nombre = datos.nombre;
+        data.usuario = datos.usuario;
 
         $.ajax(
         {
@@ -124,7 +126,7 @@ $("#enviar").click(function(event)
                         
                         //console.log(data.correo);
                         //console.log(data.contrasena_nueva);
-                        enviarContrasena({"contrasena"  : data.contrasena_nueva, "email" : data.correo, "tipo" : "restablecer_password"}, function(data)
+                        enviarContrasena({"nombre": data.nombre,"usuario" : data.usuario,"contrasena"  : data.contrasena_nueva, "email" : data.correo, "tipo" : "restablecer_password"}, function(data)
                             {
                                 if(data.status)
                                 {

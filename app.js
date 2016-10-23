@@ -96,8 +96,10 @@ var express 		= 	require("express"),
 	//Para guardar el usuario...
 	app.post("/registrore", rutas.registroPost);
 
-	//Traer personas filtradas
-	app.post("/traerFiltro", rutas.traerFiltro);
+
+	// Enviar contraseñas para guardar
+	app.post("/cambiar_password", rutas.cambiar_password);
+
 
 
 	//Olvido contraseña
@@ -131,6 +133,13 @@ var express 		= 	require("express"),
 	app.put('/updateUsuario', rutas.updateRegistro);
 
 
+	app.get('/traerDatos_Medico', rutas.traerDatos_Medico);
+
+
+	//Mostrar vista cambiar contraseña
+	app.get('/change_password', rutas.change_password);
+
+
 	//Eliminar de forma logica el registro de un paciente
 	app.put('/eliminarUsuario', rutas.eliminarUsuario);
 
@@ -141,7 +150,40 @@ var express 		= 	require("express"),
 	//Para realizar el envío de un email..
 	
 	app.post('/mail', function (req, res, next)
-	{		
+	{	
+		var data = req.body;	
+		
+		if (data.tipo === "cambiar_contrasena")
+		 {
+			var txtMsg = "Cordial saludo " + data.nombre + ", se ha cambiado de contraseña recientemente, las credenciales para ingresar a la plataforma ToyMei han cambiado, Usuario: " + data.usuario +" ,Contraseña nueva es: " + data.contrasena + " ,recuerda cambiarla en el menu principal."; 
+			//console.log(txtMsg);
+			app.mailer.send('mail',
+			{
+				to: data.correo,
+				subject: 'ToyMei - Cambio de contraseña reciente',
+				text: txtMsg
+			},
+			function (err)
+			{
+				if (err)
+				{
+					res.json
+				({
+				  status  : false,
+				  correo  : data.correo
+				});
+					return;
+		    	}
+				res.json
+				({
+				  status  : true,
+				  correo  : data.correo
+				});
+			});
+		 };
+
+
+
 		if (req.body.tipo === "informar_paciente")
 		 {
 
@@ -181,9 +223,11 @@ var express 		= 	require("express"),
 		 {
 		 	//console.log("Entro a enviarle contraseña al medico");
 		 	
-			var txtMsg = "Cordial saludo " + req.body.correo + ", la contraseña nueva es: " + req.body.contrasena + " recuerda cambiarla en el menu principal."; 
+		 	var data = req.body;
+
+			var txtMsg = "Cordial saludo " + data.nombre + ", las credenciales para ingresar a la plataforma ToyMei han cambiado, Usuario: " + data.usuario +" ,Contraseña nueva es: " + req.body.contrasena + " ,recuerda cambiarla en el menu principal."; 
 			
-			console.log(txtMsg);
+			//console.log(txtMsg);
 
 			app.mailer.send('mail',
 			{

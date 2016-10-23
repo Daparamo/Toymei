@@ -1,9 +1,34 @@
 $(function()
 {
+    var resultadoBusca = []; //Gurda los usuarios que cumplen con el criterio de búsqueda...
     listadoPersonas = [];
     var ind;
+    traerPersonas();
 
-  traerPersonas();
+    //Edades
+    //Minimo 15 años
+    // Maximo 80 años
+
+var edad_minima = 15;
+var edad_maxima = 80
+
+var fecha = new Date();
+var ano = Number(fecha.getFullYear());
+
+var min = ano - edad_minima;
+var max = ano - edad_maxima;
+
+
+
+fecha_minima = min.toString() + "-01-01";
+fecha_max = max.toString() + "-01-01";
+
+//Las fechas van de esa forma min con fecha_max y max_fecha_minima
+$('#fechanace').attr({
+    min : fecha_max,
+    max : fecha_minima
+});
+
 
 function enviarContrasena (datos,callback) 
     {
@@ -66,60 +91,13 @@ function enviarCorreo (callback)
 $('#buscar').change(function(event) 
 {
 
-if ($('#buscar').val() !== "")
-    {
 
-    traerFiltro(function(data)
-                    {
-
-                     //   console.log(data);
-                       // imprimeUsuarios(data);
-                        for (var i = 0; i < data.length; i++) 
-                        {;
-                            console.log(data[0]);
-                        };
-
-
-
-
-
-                    });
-    }
-else
-{
-    traerPersonas();
-}
 
 
 });
 
 
- function traerFiltro (callback) 
-    {
-        var data = {};
-        data.search = $('#buscar').val();
-            
-       // console.log(data);  
 
-        $.ajax(
-        {
-            url         : "traerFiltro",
-            type        : "POST",
-            data        : JSON.stringify(data),
-            dataType    : "json",
-            contentType: "application/json; charset=utf-8"
-        }).done(function(data)
-        {
-           // imprimeUsuarios(data);
-            callback(data);
-
-        }).error(function(request, status, error)
-        {            
-            sweetAlert("Oops...", request.responseText, "error");
-            var delay = 3000;
-            setTimeout(function(){ window.location = "/" }, delay);
-        });
-    }
 
 
 
@@ -147,11 +125,13 @@ function traerPersonas (callback)
         { 
 
             //console.log(data)
+            
+
             listadoPersonas=data;
 
            console.log(listadoPersonas);
             
-           imprimeUsuarios(listadoPersonas);
+           imprimeUsuarios(data);
   
         }).error(function(request, status, error)
         {
@@ -326,6 +306,7 @@ function traerPersonas (callback)
 
     var imprimeUsuarios = (function imprimeUsuarios()
     {
+        var muestra = true;
         var txt = "<table class = 'table-fill'>" + 
                     "<thead><tr>" + 
                     "<th>Cédula</th>" + 
@@ -338,7 +319,17 @@ function traerPersonas (callback)
                     "<tbody class = 'table-hover'>";
         for(var i = 0; i < listadoPersonas.length; i++)
         {
-            txt += "<tr>";
+            muestra = true;
+            for(var c in resultadoBusca)
+            {
+                if(resultadoBusca[c] === i)
+                {
+                    muestra = false;
+                }
+            }
+            if(muestra)
+            {
+                txt += "<tr>";
             var datosPersona = listadoPersonas[i];
 
            // console.log(datosPersona)
@@ -350,80 +341,93 @@ function traerPersonas (callback)
                 txt += "<td><center>"+datosPersona.nacimiento+"</center></td>";
                 txt += "<td><center>"+ calculaEdad(datosPersona.nacimiento)+"</center></td>";
 
-            //Editar...
-            txt += "<td><center>";
-            txt += "<img src = 'img/editar.png' border = '0' id = 'e_"+i+"'/>";
-            txt += "</center</td>";
-            //Eliminar...
-            txt += "<td><center>";
-            txt += "<img src = 'img/eliminar.png' border = '0' id = 'd_"+i+"'/>";
-            txt += "</center</td>";
-            txt += "</tr>";
+                //Editar...
+                txt += "<td><center>";
+                txt += "<img src = 'img/editar.png' border = '0' id = 'e_"+i+"'/>";
+                txt += "</center</td>";
+                //Eliminar...
+                txt += "<td><center>";
+                txt += "<img src = 'img/eliminar.png' border = '0' id = 'd_"+i+"'/>";
+                txt += "</center</td>";
+                txt += "</tr>";
+            }
         }
         txt += "</tbody></table>";
         nom_div("imprime").innerHTML = txt;
 
         //Poner las acciones de editar y eliminar...
         for(var i = 0; i < listadoPersonas.length; i++)
-        {        
-            //Editar...
-            nom_div("e_" + i).addEventListener('click', function(event)
-            {
-                ind = event.target.id.split("_")[1];
-                // console.log(ind); //Posicion en la tabla
-                // var idUser = listadoPersonas[ind].cedula;
-                // console.log("Valor de idUser: ", idUser);
-                //  ind = buscaIndice(idUser);
-                if(ind >= 0)
-                {
-                    nom_div("identifica").value = listadoPersonas[ind].cedula;
-                    nom_div("nombre").value = listadoPersonas[ind].nombre;
-                    nom_div("apellido").value = listadoPersonas[ind].apellido;
-                    nom_div("email").value = listadoPersonas[ind].correo;
-                    nom_div("fechanace").value = listadoPersonas[ind].nacimiento;
-                    $('#guarda').html("Actualizar Usuario");
-                }
-                else
-                {
-                   alert("No existe el ID");
-                }
-            });
+        {    
 
-            //Eliminar...
-            nom_div("d_" + i).addEventListener('click', function(event)
+            muestra = true;
+            for(var c in resultadoBusca)
             {
-                var ind = event.target.id.split("_")[1];
-                var idUser = listadoPersonas[ind].identificacion;
-                swal({
-                        title: "¿Estás segur@?",
-                        text: "Se eliminara al paciente " + listadoPersonas[ind].nombre + " " + listadoPersonas[ind].apellido,
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Ok",
-                        closeOnConfirm: false
-                    },
-                function()
+                if(resultadoBusca[c] === i)
                 {
-                    eliminarRegistro(ind,function(data)
+                    muestra = false;
+                }
+            }
+            if(muestra)
+            {    
+                //Editar...
+                nom_div("e_" + i).addEventListener('click', function(event)
+                {
+                    ind = event.target.id.split("_")[1];
+                    // console.log(ind); //Posicion en la tabla
+                    // var idUser = listadoPersonas[ind].cedula;
+                    // console.log("Valor de idUser: ", idUser);
+                    //  ind = buscaIndice(idUser);
+                    if(ind >= 0)
                     {
-                        if(data.status)
+                        nom_div("identifica").value = listadoPersonas[ind].cedula;
+                        nom_div("nombre").value = listadoPersonas[ind].nombre;
+                        nom_div("apellido").value = listadoPersonas[ind].apellido;
+                        nom_div("email").value = listadoPersonas[ind].correo;
+                        nom_div("fechanace").value = listadoPersonas[ind].nacimiento;
+                        $('#guarda').html("Actualizar Usuario");
+                    }
+                    else
+                    {
+                       alert("No existe el ID");
+                    }
+                });
+
+                //Eliminar...
+                nom_div("d_" + i).addEventListener('click', function(event)
+                {
+                    var ind = event.target.id.split("_")[1];
+                    var idUser = listadoPersonas[ind].identificacion;
+                    swal({
+                            title: "¿Estás segur@?",
+                            text: "Se eliminara al paciente " + listadoPersonas[ind].nombre + " " + listadoPersonas[ind].apellido,
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: false
+                        },
+                    function()
+                    {
+                        eliminarRegistro(ind,function(data)
                         {
-                            sweetAlert("Oops", "No se pudo eliminar.", "error");
-                        }
-                        else
-                        {
-                            ind = buscaIndice(idUser);
-                            if(ind >= 0)
+                            if(data.status)
                             {
-                                listadoPersonas.splice(ind, 1);
-                                swal({   title: "Eliminado!",   text: "Se ha elimiando exitosamente",   timer: 1500,   showConfirmButton: false, type : "success"});
-                                traerPersonas();
-                            }                            
-                        }
-                    });
-                })
-            });
+                                sweetAlert("Oops", "No se pudo eliminar.", "error");
+                            }
+                            else
+                            {
+                                ind = buscaIndice(idUser);
+                                if(ind >= 0)
+                                {
+                                    listadoPersonas.splice(ind, 1);
+                                    swal({   title: "Eliminado!",   text: "Se ha elimiando exitosamente",   timer: 1500,   showConfirmButton: false, type : "success"});
+                                    traerPersonas();
+                                }                            
+                            }
+                        });
+                    })
+                });
+            }
         }
     return imprimeUsuarios;
     })();
@@ -452,6 +456,7 @@ function traerPersonas (callback)
         event.preventDefault();
 
         var enviaForm = true;
+       // var valores = [];
         var campos = ["identifica", "nombre", "apellido", "email", "fechanace"];
         for(var i = 0; i < campos.length; i++)
         {
@@ -462,7 +467,17 @@ function traerPersonas (callback)
                 enviaForm = false;
                 break;
             }
+            
         }
+
+        var patron = /^\d*$/;                          //Expresión regular para aceptar solo números enteros positivos
+            if (!patron.test($("#identifica").val())) 
+            {             
+                sweetAlert("Cedula inválida", "La cedula "+($("#identifica").val())+", no es válida", "error");
+                $("#identifica").focus();
+                enviaForm = false;  
+            }
+
         if(enviaForm)
         {
             //Validar que el e-mail sea válido...
@@ -471,6 +486,10 @@ function traerPersonas (callback)
                 sweetAlert("Correo inválido", "El correo "+($("#email").val())+", no es válido", "error");
                 enviaForm = false;
             }
+
+
+
+
         var letrero = $('#guarda').html();        
         if (letrero == "Guardar Usuario") 
             {
@@ -524,7 +543,7 @@ function traerPersonas (callback)
                                         type    : "success",  
                                         showConfirmButton: false 
                                     });
-
+                        
                                     traerPersonas();
                                     limpiaCampos(campos);                                
                                 }
@@ -579,6 +598,37 @@ function traerPersonas (callback)
         }    
         return enviaForm;
     });
+
+
+    nom_div("buscar").addEventListener('keyup', function(event)
+    {
+        resultadoBusca = []; //Reiniciar el array de resultados de búsqueda...
+        var busca = false;
+        if(this.value !== "")
+        {
+            for(var i = 0; i < listadoPersonas.length; i++)
+            {
+
+                busca = listadoPersonas[i].cedula.search(this.value) < 0;
+                busca = busca && listadoPersonas[i].nombre.search(this.value) < 0;
+                busca = busca && listadoPersonas[i].apellido.search(this.value) < 0;
+                busca = busca && listadoPersonas[i].correo.search(this.value) < 0;
+                if(busca)
+                {
+                    resultadoBusca.push(i);
+                }
+            }
+        }
+        imprimeUsuarios();
+    });
+
+
+
+
+
+
+
+
 
     function calculaEdad (fechanacimiento) 
     {

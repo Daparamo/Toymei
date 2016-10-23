@@ -4,3 +4,13 @@ La aplicacion tiene 4 vistas funcionando login, registro, menu y registro pacien
 Edita paciente y elimina logicamnete pacientes. Toca restablecer la base de datos ya no se estalla tan facil la parte deñ registro y actualizar datos se estlla en el console.log("Se estalla"); en la linea  347 de rutas.js
 
 --> Se realizo el restablecer contraseña y funciona perfecto;
+
+
+--> Se considera que no deberia realizarse mas al formulario registrar paciente.
+
+Sugerencias
+--> Ponerle flecha de atras a la vista change_password.
+
+--> Configurar la vista de la tuerca en el la vista menu.jade
+
+--> Inserta pacientes un poco lento tal vez por que envia un correo al email de ellos al registrar
