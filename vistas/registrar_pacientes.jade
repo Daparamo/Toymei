@@ -27,8 +27,7 @@ html(lang='en')
     hr
     br
     #cajon1
-      form#form()
-        
+      form#form(action='/createRegistro123', method='POST')
         input#identifica(type='number', placeholder='Cédula',  autocomplete='off', name='identifica')
         input#nombre(type='text', placeholder='Nombre', autocomplete='off', name='nombre')
         input#apellido(type='text', placeholder='Apellido', autocomplete='off', name='apellido')

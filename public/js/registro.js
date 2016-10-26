@@ -1,5 +1,10 @@
 $(function()
 {
+
+
+
+    
+
     $("#form").submit(function(event)
     {
         var enviaForm = true;
@@ -26,6 +31,55 @@ $(function()
                 sweetAlert("Contraseña inválida", "La contraseña debe tener minimo mayusculas-minuscula-caracter especial- sin espacio en blanco", "error");
                 enviaForm = false;
             }
+
+/*
+            if(enviaForm)
+            {
+
+                registroExiste(function(data)
+                            {
+                              //  console.log("Existe: " + data.status)
+                                
+
+                                if(data.status)
+                                {
+                                    enviarMensajeBienvenida(function(data)
+                                    {
+
+                                      //  console.log("Envio correo: " + data.status)
+                                        
+                                        if(data.status)
+                                        {
+                                            swal
+                                            ({   
+                                                title   : "!Nice Job! :)",   
+                                                text    : "Bienvenido a ToyMei " + $("#nombre").val(),   
+                                                timer   : 2000,
+                                                type    : "success",  
+                                                showConfirmButton: false 
+                                            });
+                                        }
+
+                                        else
+                                        {
+                                            swal("Error!", "Falla al registrarse." , "error");
+                                            enviaForm = false;
+                                        }
+                                    });
+                                }
+                                else
+                                {
+
+                                    enviaForm = false;
+                                }
+                            });
+                
+
+            }
+            */
+
+
+
         }
         return enviaForm;
     });

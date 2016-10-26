@@ -88,28 +88,6 @@ function enviarCorreo (callback)
     }
 
 
-$('#buscar').change(function(event) 
-{
-
-
-
-
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function traerPersonas (callback)

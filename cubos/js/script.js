@@ -10,7 +10,7 @@ String.prototype.format = function () {
 
 			}
 
-			var container;
+			var container, stats;
 			var camera, scene, renderer;
 			var splineHelperObjects = [],
 				splineOutline;
@@ -117,7 +117,8 @@ String.prototype.format = function () {
 				container.appendChild( info );
 				container.appendChild( options );
 
-				
+				stats = new Stats();
+				container.appendChild( stats.dom );
 
 				// Controls
 				controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -150,8 +151,6 @@ String.prototype.format = function () {
 
 				transformControl.addEventListener( 'objectChange', function( e ) {
 
-
-					$('#Array_Cubos').val(JSON.stringify(positions));
 					updateSplineOutline();
 
 				} );
@@ -227,16 +226,23 @@ String.prototype.format = function () {
 
 				}
 
-				
+				var geometry = new THREE.Geometry();
+
+				for ( var i = 0; i < ARC_SEGMENTS; i ++ ) {
+
+					geometry.vertices.push( new THREE.Vector3() );
+
+					
+
+				}
 				//console.log(positions);
 
 			}
 
 			function addSplineObject( position ) {
 
-				var object = new THREE.Mesh( new THREE.CubeGeometry( 100, 100, 100 ), new THREE.MeshLambertMaterial( { //Tamaño de los cubos
-					//color: Math.random() * 0xffffff //Colores de los cubos
-					color: Math.random() * 0x00663300	 //Colores de los cubos
+				var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( {
+					color: Math.random() * 0xffffff //Colores de los cubos
 					} ) );
 				object.material.ambient = object.material.color;
 				
@@ -339,6 +345,7 @@ String.prototype.format = function () {
 
 				requestAnimationFrame( animate );
 				render();
+				stats.update();
 				controls.update();
 				transformControl.update();
 
@@ -348,5 +355,3 @@ String.prototype.format = function () {
 			{
 				renderer.render( scene, camera );
 			}
-
-			

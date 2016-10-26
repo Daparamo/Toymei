@@ -20,6 +20,8 @@ var express 		= 	require("express"),
 	//Para el manejo de autenticación...
 	passport.use(new LocalStrategy(function(username, password, done)
 	{
+		//console.log("ENTRO A MIRAR LOGIN PLATAFORMA")
+
 		var sql = "select clave, usuario from users WHERE usuario = '" + (username) + "'";
 		db.queryMysql(sql, function(err, response)
 		{
@@ -97,6 +99,15 @@ var express 		= 	require("express"),
 	app.post("/registrore", rutas.registroPost);
 
 
+	//Guardar en la BD los datos del ejercicio
+	app.post("/insertarEjercicio", rutas.insertarEjercicio);
+	
+	// Traer vista cubos
+	
+	app.get("/vista_cubos", rutas.vistaCubos);
+
+
+
 	// Enviar contraseñas para guardar
 	app.post("/cambiar_password", rutas.cambiar_password);
 
@@ -117,11 +128,20 @@ var express 		= 	require("express"),
 	//Mostrar Vista AsignarEjercicio
 	app.get("/AsignarEjercicio", rutas.AsignarEjercicio);
 
-	//Crear Ejercicio 
-	app.post("/crearEjercicio", rutas.crearEjercicio);	
+	
 	//******************************************
 	//Traer todas los pacientes x medico
 	app.get('/traerPersonas', rutas.traerPersonas);
+
+
+
+	//Validar que un medico no exista en la base de datos
+	
+
+	//app.get('/registroExiste', rutas.registroExiste);
+
+
+
 
 
 
@@ -183,6 +203,68 @@ var express 		= 	require("express"),
 		 };
 
 
+		 if (data.tipo === "informar_paciente_new_ejercicio")
+		 {
+			var txtMsg = "Cordial saludo " + data.nombre + ", tienes un nuevo ejercicio :)"; 
+			//console.log(txtMsg);
+			app.mailer.send('mail',
+			{
+				to: data.correo,
+				subject: 'ToyMei - Nuevo Ejercicio',
+				text: txtMsg
+			},
+			function (err)
+			{
+				if (err)
+				{
+					res.json
+				({
+				  status  : false,
+				  nombre  : data.nombre,
+				  correo  : data.correo
+				});
+					return;
+		    	}
+				res.json
+				({
+				  status  : true,
+				  nombre  : data.nombre,
+				  correo  : data.correo
+				});
+			});
+		 };
+
+
+/*
+		 if (data.tipo === "Bienvenido")
+		 {
+			var txtMsg = "Cordial saludo " + data.nombre + ", te damos la bienvenida a ToyMei, las credenciales para ingresar a la plataforma ToyMei son, Usuario: " + data.usuario +" ,Contraseña es: " + data.contrasena + " ."; 
+			console.log(txtMsg);
+			
+			app.mailer.send('mail',
+			{
+				to: data.correo,
+				subject: 'ToyMei - Bienvenid@ ' + data.nombre,
+				text: txtMsg
+			},
+			function (err)
+			{
+				if (err)
+				{
+					res.json
+				({
+				  status  : false
+				});
+					return;
+		    	}
+				res.json
+				({
+				  status  : true
+				});
+			});
+		 };
+
+*/
 
 		if (req.body.tipo === "informar_paciente")
 		 {
@@ -254,6 +336,11 @@ var express 		= 	require("express"),
 			});
 		}
 	});
+
+
+
+
+
 
 	//Para cualquier url que no cumpla la condición...
 	app.get("*", rutas.notFound404);
