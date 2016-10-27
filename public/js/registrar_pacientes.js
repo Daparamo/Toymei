@@ -5,6 +5,8 @@ $(function()
     var ind;
     traerPersonas();
 
+     $(".se-pre-con").fadeOut("slow");
+
     //Edades
     //Minimo 15 años
     // Maximo 80 años
@@ -32,6 +34,9 @@ $('#fechanace').attr({
 
 function enviarContrasena (datos,callback) 
     {
+
+        $(".se-pre-con").fadeIn("slow");
+
         var data = {};
         data.correo = datos.email;
         data.contrasena = datos.contrasena;
@@ -46,6 +51,8 @@ function enviarContrasena (datos,callback)
             contentType: "application/json; charset=utf-8"
         }).done(function(data)
         {
+
+            $(".se-pre-con").fadeOut("slow");
             callback(data);
             //console.log(data.status)
 
@@ -491,48 +498,48 @@ function traerPersonas (callback)
                     }
                     else
                     {
-                    //limpiaCampos(campos);
-                    traerEmailandPass($("#identifica").val(),function(data)
-                    {
+                        //limpiaCampos(campos);
+                        traerEmailandPass($("#identifica").val(),function(data)
+                        {
 
-                   // console.log("Estado: " + data.status)
+                       // console.log("Estado: " + data.status)
 
-                    if(!data.status)
-                    {
-                      
-                        console.log("No se actualizo contraseña por que no se encontro usuario " + data.correo);
-                         traerPersonas();
-                        // limpiaCampos(campos)
-                    
-                    }
-                    else
-                    {
-                        enviarContrasena({"contrasena"  : data.contrasena, "nombre" : data.nombre ,  "email" : data.correo, "tipo": "informar_paciente"}, function(data)
+                            if(!data.status)
                             {
+                              
+                                console.log("No se actualizo contraseña por que no se encontro usuario " + data.correo);
+                                 traerPersonas();
+                                // limpiaCampos(campos)
+                            
+                            }
+                            else
+                            {
+                                enviarContrasena({"contrasena"  : data.contrasena, "nombre" : data.nombre ,  "email" : data.correo, "tipo": "informar_paciente"}, function(data)
+                                    {
 
-                                if(data.status)
-                                {
-                                    //event.preventDefault();
-                                    swal
-                                    ({   
-                                        title   : "!Bien! :)",   
-                                        text    : "Se ha guardado el paciente correctamente.",   
-                                        timer   : 2000,
-                                        type    : "success",  
-                                        showConfirmButton: false 
-                                    });
-                        
-                                    traerPersonas();
-                                    limpiaCampos(campos);                                
-                                }
+                                        if(data.status)
+                                        {
+                                            //event.preventDefault();
+                                            swal
+                                            ({   
+                                                title   : "!Bien! :)",   
+                                                text    : "Se ha guardado el paciente correctamente.",   
+                                                timer   : 2000,
+                                                type    : "success",  
+                                                showConfirmButton: false 
+                                            });
+                                
+                                            traerPersonas();
+                                            limpiaCampos(campos);                                
+                                        }
 
-                                else
-                                {
-                                    swal("Error!", "No se ha podido enviar el email a: " + data.correo, "error");
-                                }
-                            });                                        
-                    }
-                    });                            
+                                        else
+                                        {
+                                            swal("Error!", "No se ha podido enviar el email a: " + data.correo, "error");
+                                        }
+                                    });                                        
+                            }
+                        });                            
                     }
               });
             };             

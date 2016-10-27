@@ -1,14 +1,145 @@
-$(function()
-{
+$(document).ready(function() {
 
 
 
+
+
+    var delay = 700;
+          setTimeout(function(){  $(".wait").fadeOut('slow'); }, delay);
+
+    var campos = ["nombre", "correo", "username", "password"];
     
 
-    $("#form").submit(function(event)
+        function registroExiste (datos,callback) 
     {
-        var enviaForm = true;
-        var campos = ["nombre", "correo", "username", "password"];
+
+
+
+        var data = {};
+        data.correo = datos.correo;
+        data.username = datos.usuario;
+        $.ajax(
+        {
+            url         : "registroExiste",
+            type        : "POST",
+            data        : JSON.stringify(data),
+            dataType    : "json",
+            contentType: "application/json; charset=utf-8"
+        }).done(function(data)
+        {
+          callback(data);
+
+        }).error(function(request, status, error)
+        {
+            
+             sweetAlert("Oops...", request.responseText, "error");
+            //alert(request.responseText);
+            window.location = "/";
+
+            
+        });
+
+    }
+
+
+
+        function insertarDatos(datos,callback) 
+        {
+
+
+        var data = {};
+        data.correo = datos.correo;
+        data.password = datos.contrasena;
+        data.nombre = datos.nombre;
+        data.username = datos.usuario;
+
+
+
+        $.ajax(
+        {
+            url         : "registroPost",
+            type        : "POST",
+            data        : JSON.stringify(data),
+            dataType    : "json",
+            contentType: "application/json; charset=utf-8"
+        }).done(function(data)
+        {
+             $("#cargando").fadeOut('slow');
+          //console.log("Registro exitoso")
+          callback(data);
+        }).error(function(request, status, error)
+        {
+            
+
+         window.location = "/"
+    
+   
+
+            
+        });
+
+    }
+
+
+
+
+
+
+
+
+
+     function enviarMensajeBienvenida (datos,callback) 
+    {
+
+        $("#form").hide();
+        $("#imagen").hide();
+        $("#banner").hide();
+        $("#link").hide();
+
+        $("body").css({
+                        "background-color" : '#009688',
+                        "font-family"  : 'arial'
+        });
+         $("#cargando").fadeIn('slow');
+
+     
+        var data = {};
+        data.correo = datos.correo;
+        data.contrasena = datos.contrasena;
+        data.tipo = datos.tipo;
+        data.nombre = datos.nombre;
+        data.usuario = datos.usuario;
+        $.ajax(
+        {
+            url         : "mail",
+            type        : "POST",
+            data        : JSON.stringify(data),
+            dataType    : "json",
+            contentType: "application/json; charset=utf-8"
+        }).done(function(data)
+        {
+          
+            callback(data);
+
+            
+
+        }).error(function(request, status, error)
+        {
+            
+
+            sweetAlert("Oops...", request.responseText, "error");
+            //alert(request.responseText);
+            window.location = "/";
+        });
+
+    }
+
+
+
+$('#guarda').click(function(event) {
+        
+        var enviaForm = true; 
+        
         for(var i = 0; i < campos.length; i++)
         {
             if($("#" + campos[i]).val().length === 0)
@@ -32,56 +163,80 @@ $(function()
                 enviaForm = false;
             }
 
-/*
-            if(enviaForm)
+             if(enviaForm)
             {
 
-                registroExiste(function(data)
+                registroExiste({"usuario" : $("#username").val(), "correo" : $("#correo").val() },function(data)
                             {
-                              //  console.log("Existe: " + data.status)
+                              
+                              // console.log("Existe: " + data.status)
                                 
 
-                                if(data.status)
+                                if(!data.status)
                                 {
-                                    enviarMensajeBienvenida(function(data)
+                                    enviarMensajeBienvenida({"contrasena": $("#password").val() ,"usuario" : $("#username").val() ,"nombre" : $("#nombre").val(),  "correo" : $("#correo").val(), "tipo": "Bienvenido"},function(data)
                                     {
 
                                       //  console.log("Envio correo: " + data.status)
                                         
                                         if(data.status)
-                                        {
-                                            swal
-                                            ({   
-                                                title   : "!Nice Job! :)",   
-                                                text    : "Bienvenido a ToyMei " + $("#nombre").val(),   
-                                                timer   : 2000,
-                                                type    : "success",  
-                                                showConfirmButton: false 
+                                        {   
+
+
+                                            insertarDatos({"contrasena": $("#password").val(),"usuario" : $("#username").val() , "nombre" : $("#nombre").val(),"correo" : $("#correo").val()},function(data)
+                                            {
+
+                                              //Se guardaron los datos correctamente   
+                                                if(data.status)
+                                                {   
+
+                                                    swal
+                                                    ({   
+                                                        title   : "!Nice Job! :)",   
+                                                        text    : "Bienvenido a ToyMei " + $("#nombre").val(),   
+                                                        timer   : 2000,
+                                                        type    : "success",  
+                                                        showConfirmButton: false 
+                                                    });
+                                                }
+
+                                                else
+                                                {
+                                                    swal("Error!", "NO SE PUDIERON GUARDAR LOS DATOS" , "error");
+                                                    
+                                                }
                                             });
+
                                         }
 
                                         else
                                         {
-                                            swal("Error!", "Falla al registrarse." , "error");
-                                            enviaForm = false;
+                                            swal("Error!", "Falla al enviar el email" , "error");
+                                            
                                         }
                                     });
                                 }
+
                                 else
                                 {
 
-                                    enviaForm = false;
+                                    swal("Opps!", "El usuario o correo ya existe." , "error");
+                                    $("#correo").val("");
+                                    $("#username").val("");
+                                    
                                 }
+                            
+
                             });
-                
-
             }
-            */
-
-
-
         }
-        return enviaForm;
+        
+
+
+
+
+
+
     });
     
     var validaEmail = function(email)
@@ -95,6 +250,8 @@ $(function()
         var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,15}$/;
         return regex.test(password);
     };
+
+    
 
    
 

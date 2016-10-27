@@ -12,6 +12,7 @@ html
     link(rel='manifest', href='manifest.json')
     title!= titulo
   body.page
+    .loading
     .navigation-bar
       .navigation-bar__item.left.quarter.float-left
       .navigation-bar__item.full.float-left.text-centering
@@ -34,4 +35,5 @@ html
     link(rel='stylesheet', type='text/css', href='css/sweetalert.css')
     script(src='js/sweetalert.min.js')
     script(src='js/jquery-1.11.3.min.js')
+    script(src='js/modernizr.js')
     script(src='js/olvido_contrasena.js')

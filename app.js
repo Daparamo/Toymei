@@ -96,7 +96,7 @@ var express 		= 	require("express"),
 	//Para mostrar la vista de registro..
 	app.get("/registrolol", rutas.registro);
 	//Para guardar el usuario...
-	app.post("/registrore", rutas.registroPost);
+	app.post("/registroPost", rutas.registroPost);
 
 
 	//Guardar en la BD los datos del ejercicio
@@ -138,7 +138,7 @@ var express 		= 	require("express"),
 	//Validar que un medico no exista en la base de datos
 	
 
-	//app.get('/registroExiste', rutas.registroExiste);
+	app.post('/registroExiste', rutas.registroExiste);
 
 
 
@@ -235,7 +235,7 @@ var express 		= 	require("express"),
 		 };
 
 
-/*
+
 		 if (data.tipo === "Bienvenido")
 		 {
 			var txtMsg = "Cordial saludo " + data.nombre + ", te damos la bienvenida a ToyMei, las credenciales para ingresar a la plataforma ToyMei son, Usuario: " + data.usuario +" ,Contraseña es: " + data.contrasena + " ."; 
@@ -264,14 +264,14 @@ var express 		= 	require("express"),
 			});
 		 };
 
-*/
+
 
 		if (req.body.tipo === "informar_paciente")
 		 {
 
 		 	//console.log("Entro a informar paciente");
 
-		 	var txtMsg = "Cordial saludo " + req.body.nombre + ", el siguiente correo es para informar las credenciales para el acceso a la App ToyMei, podra hacerlo con los siguientes datos,  Usuario: " + req.body.correo + " Contraseña: "+ req.body.contrasena +" ,recuerda cambiarla en el menú principal. Por favor no reenviar este correo."; 
+		 	var txtMsg = "Cordial saludo " + req.body.nombre + ", el siguiente correo es para informar las credenciales para el acceso a la App ToyMei, podra hacerlo con los siguientes datos,  Usuario: " + req.body.correo + " Contraseña: "+ req.body.contrasena +" ,recuerda cambiarla en el menú principal. Por favor no responder este correo."; 
 			
 			//console.log(txtMsg);
 

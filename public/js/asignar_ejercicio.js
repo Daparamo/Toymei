@@ -1,5 +1,9 @@
-$(function()
-{
+$(document).ready(function() {
+        
+          var delay = 700;
+          setTimeout(function(){  $(".se-pre-con").fadeOut('slow'); }, delay);
+    
+   
 
     //En el select el valor "0" es para EJERCICIOS
     //En el select el valor "1" es para ESTIRAMIENTO
@@ -472,6 +476,7 @@ function enviarEjercicio (coordenadas,tipo,id_paciente,callback)
 
 function enviarCorreo_newEjercicio (datos,callback) 
     {
+        $(".se-pre-con").fadeIn("slow");
         var data = {};
         data.correo = datos.correo;
         data.tipo = datos.tipo;
@@ -485,6 +490,7 @@ function enviarCorreo_newEjercicio (datos,callback)
             contentType: "application/json; charset=utf-8"
         }).done(function(data)
         {
+            $(".se-pre-con").fadeOut("slow");
             callback(data);
             //console.log(data.status)
 
@@ -650,6 +656,7 @@ function enviarCorreo_newEjercicio (datos,callback)
                                         else
                                         {
                                             swal("Error!", "No se ha podido enviar el email a: " + data.correo, "error");
+                                             limpiaCampos(campos);    
                                         }
                                     });                               
                                 }
@@ -657,6 +664,7 @@ function enviarCorreo_newEjercicio (datos,callback)
                                 else
                                 {
                                     swal("Error!", "No se ha podido guardar el ejercicio  de: " + id_Paciente.nombre, "error");
+                                     limpiaCampos(campos);    
                                 }
                             });
                             

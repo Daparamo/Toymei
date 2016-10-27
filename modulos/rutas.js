@@ -161,44 +161,31 @@ var registroPost = function(req, res, next)
 {
     //Buscar si el nombre de usuario o correo ya existen...
 	var data = req.body;
-
-	var sql = "select count(*) as numero from users " +
-			   "where usuario = '"+(data.username)+"' or " +
-			   		  "email = '"+(data.correo)+"'";
-	db.queryMysql(sql, function(err, response)
-	{
-		if(response[0].numero !== 0)
-		{
-
-
-
-
-			res.render('registrolol', {
-									titulo: 'Registro Medico',
-									error: 'Nombre de usuario o correo ya existe',
-									data : [data.nombre, data.correo, data.username]
-								});
-		}		
-		else
-		{
-            var password = bcrypt.hashSync(data.password);
+	var password = bcrypt.hashSync(data.password);
 			sql = "INSERT INTO users (nombre, usuario, clave, email, fecha) " +
 					  "VALUES ('" + data.nombre + "', '" + data.username + "', " +
 					  		   "'" + password + "', '"+data.correo+"', '" + fechaActual + "')";
-			db.queryMysql(sql, function(err, response)
-			{
-				//if (err || response.affectedRows === 0)
-				//{
-				//	res.render('registrolol');
-				//}
-				
+		
+			db.queryMysql(sql, function(err, response){
 
-				loginPost(req, res, next); 
-
-				
+	    		if (err || response.affectedRows === 0)
+				{
+					res.render('registrolol');
+				}
+				loginPost(req, res, next);
+			
 			});
-		}
-	});
+
+
+
+
+				
+			
+
+				
+			
+		
+	
 };
 
 
@@ -310,30 +297,39 @@ var traerPersonas =  function(req, res)
 };
 
 
-/*
+
 var registroExiste =  function(req, res)
 {
 	
 		var data = req.body;
-		var status = false;
-		var sql = "select * from users " +
-			      "where usuario = '"+(data.username)+"' or " +
+	//	var status = true;
+		
+		var sql = "select usuario from users " +
+			   "where usuario = '"+(data.username)+"' or " +
 			   		  "email = '"+(data.correo)+"'";
 
+		//console.log(sql);
 
-		db.queryMysql(sql, function(err, response){
+	    db.queryMysql(sql, function(err, response){
+
+	    if(response.length !== 0)
+		{
+
+			 console.log("El registro  EXISTE");
+				res.json({status : true});
+		}	
+
+
+		if (response.length === 0)
+		{
+				console.log("El registro NO EXISTE");
+				res.json({status : false});
+		}
 			
-			console.log("respuesta " + response.length)
-
-			if (response.length === 0)
-			{
-				status = true;
-			}
-			res.json({status : status});
 		});
 	
 };
-*/
+
 
 
 
@@ -817,7 +813,7 @@ module.exports.traerDatos_Medico = traerDatos_Medico;
 
 
 //Validar que no exista ningun registro de un medico
-//module.exports.registroExiste = registroExiste;
+module.exports.registroExiste = registroExiste;
 
 
 

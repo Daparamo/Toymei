@@ -1,5 +1,8 @@
-$(function()
-{
+$(document).ready(function() {
+    
+
+
+    $(".se-pre-con").fadeOut('slow');
 
     $("#nueva_contrasena").focus();
 
@@ -117,6 +120,7 @@ $(function()
 
     function enviarEmailCambio_Password (datos,callback) 
     {
+         $(".se-pre-con").fadeIn('slow');
         var data = {};
         data.correo = datos.email;
         data.contrasena = datos.contrasena;
@@ -132,7 +136,7 @@ $(function()
             contentType: "application/json; charset=utf-8"
         }).done(function(data)
         {
-
+             $(".se-pre-con").fadeOut('slow');
             callback(data);
 
             

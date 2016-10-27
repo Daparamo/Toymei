@@ -1,5 +1,10 @@
-$(function()
-{
+$(document).ready(function() {
+    
+    var delay = 1500;
+    setTimeout(function(){  $(".loading").fadeOut('slow'); }, delay);
+
+   
+
 
     $("#correo").focus();
 
@@ -33,6 +38,8 @@ $(function()
 
     function enviarContrasena (datos,callback) 
     {
+
+        $(".loading").fadeIn('slow');
         var data = {};
         data.correo = datos.email;
         data.contrasena = datos.contrasena;
@@ -49,6 +56,7 @@ $(function()
             contentType: "application/json; charset=utf-8"
         }).done(function(data)
         {
+            $(".loading").fadeOut('slow');
             callback(data);
             //console.log(data.status)
 
