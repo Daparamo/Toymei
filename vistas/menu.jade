@@ -23,16 +23,34 @@ html(lang='en')
     br
     br
     br  
-    #cajon_opciones
-      #VerReportes
-        a(href='VerReportes.html')
-          img.tamano_imagenes(src='img/VerReportes.png', alt='VerReportes')
-      #AsignarEjercicio
-        a(href='/AsignarEjercicio')
-          img.tamano_imagenes(src='img/AsignarEjercicio.png', alt='AsignarEjercicio')
-      #Pacientes
-        a(href='/Mostrar_vista_pacientes')
-          img.tamano_imagenes(src='img/Pacientes.png', alt='Pacientes')
+    #container
+      #content
+        .circle
+          a(href='/Reportes')
+            img(src='img/VerReportes.png')
+            .header
+              h3 Ver Reportes
+            .text
+              p Podras visualizar,descargar o enviar reportes de tus pacientes.
+        .circle
+          a(href='/AsignarEjercicio')
+            img(src='img/AsignarEjercicio.png')
+            .header
+              h3 Asignar Ejercicio
+            .text
+              p Configurar un ejercicio y editarlo si deseas.
+        
+        .circle
+          a(href='/Mostrar_vista_pacientes')
+            img(src='img/Pacientes.png')
+            .header
+                  h3 Agregar Paciente
+                .text
+                  p Registrar a tus pacientes, si lo deseas podras editarlos en cualquier momento. 
+            
+            
+
+      
     
 
     

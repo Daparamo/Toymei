@@ -16,7 +16,7 @@ String.prototype.format = function () {
 				splineOutline;
 				//Cantidad de cubos iniciales ...
 			var splinePointsLength = 2;
-			var positions = [];
+			positions = [];
 			var options;
 
 			var geometry = new THREE.BoxGeometry( 20, 20, 20 );

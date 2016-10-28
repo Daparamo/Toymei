@@ -13,24 +13,16 @@ $(document).ready(function() {
     //--> Tareas iniciales
     traerPersonas(); //Traer pacientes
     traervistaCubos();
-    
-
     //Traer los TO-DO creados...
     todos = [];
 
 
 
-    $('#edita_ejercicio').click(function(event) 
-    {
-   
-        console.log("entro");
-        var frame = document.getElementById('fram1');
-        var txt = frame.contentWindow.document.document.getElementById('txt1').value;
-        document.getElementById('txt2').value = txt;
+$('#edita_ejercicio').click(function(event) 
+{
+    window.location = "/Editar_Ejercicios";
 
-        console.log($('#txt2').val());
-
-    });
+ });
 
 
 
@@ -50,81 +42,15 @@ $(document).ready(function() {
     });
    
 
-    //Para los servicios que se consumirán...
-    var nomServicios = [
-							{
-								servicio 	: 	"Trae todas las tareas",
-								urlServicio	: 	"getAllTask",
-								metodo		: 	"GET"
-							},
-							{
-								servicio 	: 	"Crear una nueva tarea",
-								urlServicio	: 	"createTask",
-								metodo		: 	"POST"
-							},
-							{
-								servicio 	: 	"Editar una tarea",
-								urlServicio	: 	"updateTask",
-								metodo		: 	"PUT"
-							},
-							{
-								servicio 	: 	"Eliminar Tarea",
-								urlServicio	: 	"deleteTask",
-								metodo		: 	"DELETE"
-							},
-							{
-								servicio 	: 	"Trae una sola tarea",
-								urlServicio	: 	"getTask",
-								metodo		: 	"GET"
-							},
-                            {
-                                servicio 	: 	"Enviar un correo",
-								urlServicio	: 	"mail",
-								metodo		: 	"POST"
-                            }
-						];
+    
 
-    var consumeServicios = function(tipo, val, callback)
-	{
-		var servicio = {
-							url 	: nomServicios[tipo - 1].urlServicio,
-							metodo	: nomServicios[tipo - 1].metodo,
-							datos 	: ""
-						};
-		if(tipo === 4 || tipo === 5)
-		{
-			servicio.url += "/" + val;
-		}
-		else
-		{
-			servicio.datos = val !== "" ? JSON.stringify(val) : "";
-		}
-		//Invocar el servicio...
-		$.ajax(
-		{
-			url 		: servicio.url,
-			type 		: servicio.metodo,
-			data 		: servicio.datos,
-			dataType 	: "json",
-			contentType: "application/json; charset=utf-8"
-		}).done(function(data)
-		{
-            callback(data);
-		}).error(function(request, status, error)
-        {
-            alert(request.responseText);
-            window.location = "/";
-		});
-	};
 
    
 
 
 function traervistaCubos(callback)
  {        
-
-   
-        $.ajax(
+    $.ajax(
         {
             url         : "vista_cubos",
             type        : "GET",
@@ -132,11 +58,10 @@ function traervistaCubos(callback)
             dataType    : "json",
             contentType: "application/json; charset=utf-8"
         })
+};
 
-    }
 
-
-    function traerPersonas (callback)
+function traerPersonas (callback)
  {        
 
     //console.log("Entro a traer los pacientes");
@@ -167,35 +92,8 @@ function traervistaCubos(callback)
 
     }
 
+ 
 
-
-
-
-
-
-
-
-
-
-
-
-
-  
-    var guardaTodo = function()
-    {
-        //Saber si el text está vacio...
-        var $task = $("#task");
-        if($task.val().length !== 0)
-        {
-            var newToDo = {finish : false, task : $task.val()};
-            //Guardar en el Backend...
-            $task.val("");
-            consumeServicios(2, newToDo, function(data){
-                todos.push(data);
-                muestraTodos(2, todos.length - 1);
-            });
-        }
-    };
 
     var contenidoTabla = function(data, type)
     {
@@ -272,100 +170,7 @@ function traervistaCubos(callback)
         }
     };
 
-    var accionTodo = function(ind, type)
-    {
-        var posInd = buscarIndice(ind);
-        if(posInd >= 0)
-        {
-            if(type === 1)
-            {
-                todos[posInd].state = $("#che_" + ind).is(':checked');
-                var updateData = {
-                                    "id"        : ind,
-                                    "finish"    : todos[posInd].state,
-                                    "field"     : "finish"
-                                };
-                consumeServicios(3, updateData, function(data)
-                {
-                    if(todos[posInd].state)
-                    {
-                        $("#txt_" + ind).addClass('terminado');
-                    }
-                    else
-                    {
-                        $("#txt_" + ind).removeClass('terminado');
-                    }
-                });
-            }
-            else if(type === 2)
-            {
-                swal({
-                        title: "¿Estás segur@?",
-                        text: "¿Deseas eliminar está tarea?",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Ok",
-                        closeOnConfirm: false
-                    },
-                    function()
-                    {
-                        swal({   title: "Eliminado!",   text: "Se ha elimiando la tarea",   timer: 1500,   showConfirmButton: false, type : "success"});
-                        consumeServicios(4, ind, function(data)
-                        {
-                            if(todos.length > 1)
-                            {
-                                todos.splice(posInd, 1);
-                            }
-                            else
-                            {
-                                todos = [];
-                            }
-                            $("#td_" + ind).fadeOut('slow', function()
-                            {
-                                $(this).remove();
-                            });
-                        });
-                    });
-            }
-            else
-            {
-                consumeServicios(5, ind, function(data)
-                {
-                    swal({
-                            title: data[0].task,
-                            text: "Escribe el correo de la persona con la cual deseas compartir la tarea",
-                            type: "input",
-                            showCancelButton: true,
-                            closeOnConfirm: false,
-                            animation: "slide-from-top",
-                            inputPlaceholder: "E-mail"
-                        },
-                        function(inputValue)
-                        {
-                            if (inputValue === false) return false;
-                            if (inputValue === "" || !validaEmail(inputValue))
-                            {
-                                swal.showInputError("El correo no es válido");
-                                return false;
-                            }
-                            //Para enviar el correo a través del servicio...
-                            consumeServicios(6, {"todo"  : data[0].task, "email" : inputValue}, function(data)
-                            {
-                                if(data.status)
-                                {
-                                    swal("Nice!", "Se ha enviado el email a: " + inputValue, "success");
-                                }
-                                else
-                                {
-                                    swal("Error!", "No se ha podido enviar el email a: " + inputValue, "error");
-                                }
-                            });
-                        });
-                });
-            }
-        }
-    };
+ 
 
     var buscarIndice = function(id)
     {
@@ -432,19 +237,19 @@ function enviarEjercicio (coordenadas,tipo,id_paciente,callback)
 
         if (tipo === "ejercitar") 
         {
-            data.id = id_paciente;
+            data.id_paciente = id_paciente;
             data.nombre_ejercicio = $('#NombreEjercicio').val();
             data.tiempo = $('#tiempoEjercicio').val();
-            data.tipo = "ejercitar";
+            data.tipo = "Ejercitar";
             data.repeticiones = $('#repeticionesEjercicio').val();
             data.coordenadas = coordenadas;
         }
         else
         {
-            data.id = id_paciente;
+            data.id_paciente = id_paciente;
             data.nombre_ejercicio = $('#NombreEjercicio').val();
             data.tiempo = $('#tiempoEjercicio').val();
-            data.tipo = "estiramiento";
+            data.tipo = "Estiramiento";
             data.repeticiones = 0;
             data.coordenadas = coordenadas;
 
@@ -527,84 +332,82 @@ function enviarCorreo_newEjercicio (datos,callback)
 
         if (opcion !== null && opcion !=="")
             {
-
-
-
-        if (opcion == "opcion1") 
-        {
-            //console.log("ENTRO A EJERCICIO")
-            var enviaForm = true;       
-            var campos = ["NombreEjercicio", "tiempoEjercicio", "repeticionesEjercicio"];
-
-            for(var i = 0; i < campos.length; i++)
-            {
-                if($("#" + campos[i]).val().length === 0)
+                if (opcion == "opcion1") 
                 {
-                    sweetAlert("Completar campos", "Por favor completa el campo " + campos[i], "error");
-                    enviaForm = false;
-                    break;
-                }
-            }
+                    //console.log("ENTRO A EJERCICIO")
+                    var enviaForm = true;       
+                    var campos = ["NombreEjercicio", "tiempoEjercicio", "repeticionesEjercicio"];
 
-            if (enviaForm) 
-                {
-
-                    var id_Paciente = seleccionoPaciente();
-
-                   // console.log("Ha seleccionado paciente" + id_Paciente.id);
-
-                    if (id_Paciente.status) 
+                    for(var i = 0; i < campos.length; i++)
+                    {
+                        if($("#" + campos[i]).val().length === 0)
                         {
-                            enviarEjercicio(coordenadas,"ejercitar",id_Paciente.id, function(data)
-                            {
+                            sweetAlert("Completar campos", "Por favor completa el campo " + campos[i], "error");
+                            enviaForm = false;
+                            break;
+                        }
+                    }
 
-                                if(data.status)
-                                {   
+                    if (enviaForm) 
+                        {
 
-                                    enviarCorreo_newEjercicio({"nombre" : id_Paciente.nombre ,  "correo" : id_Paciente.correo, "tipo": "informar_paciente_new_ejercicio"}, function(data)
+                            var id_Paciente = seleccionoPaciente();
+
+                           // console.log("Ha seleccionado paciente" + id_Paciente.id);
+
+                            if (id_Paciente.status) 
+                                {
+                                    enviarEjercicio(coordenadas,"ejercitar",id_Paciente.id, function(data)
                                     {
 
                                         if(data.status)
-                                        {
-                                       
-                                            swal
-                                            ({   
-                                                title   : "!Bien! :)",   
-                                                text    : "Se ha asignado un nuevo ejercicio al paciente." + data.nombre,   
-                                                timer   : 2000,
-                                                type    : "success",  
-                                                showConfirmButton: false 
-                                            });
-                                
-                                            limpiaCampos(campos);    
-                                                           
-                                         }
+                                        {   
+
+                                            enviarCorreo_newEjercicio({"nombre" : id_Paciente.nombre ,  "correo" : id_Paciente.correo, "tipo": "informar_paciente_new_ejercicio"}, function(data)
+                                            {
+
+                                                if(data.status)
+                                                {
+                                               
+                                                    swal
+                                                    ({   
+                                                        title   : "!Bien! :)",   
+                                                        text    : "Se ha asignado un nuevo ejercicio al paciente. " + data.nombre,   
+                                                        timer   : 2000,
+                                                        type    : "success",  
+                                                        showConfirmButton: false 
+                                                    });
+                                        
+                                                    limpiaCampos(campos);    
+                                                                   
+                                                 }
+
+                                                else
+                                                {
+                                                    swal("Error!", "No se ha podido enviar el email a: " + data.correo, "error");
+                                                }
+                                            }); 
+                                        
+                                        }
 
                                         else
                                         {
-                                            swal("Error!", "No se ha podido enviar el email a: " + data.correo, "error");
+                                            swal("Error!", "No se ha podido guardar el ejercicio "+ data.nombre_ejercicio +"  del paciente " + id_Paciente.nombre +", por que este ya tiene asociado un ejercicio de tipo: "+ data.tipo +" con el mismo nombre.", "error");
+                                            limpiaCampos(campos);
                                         }
-                                    }); 
-                                
+                                    });
+                                   
                                 }
-
-                                else
+                            else
                                 {
-                                    swal("Error!", "No se ha podido guardar el ejercicio  de: " + id_Paciente.nombre, "error");
+                                    sweetAlert("Oops", "Seleccione a un paciente ", "error");
+                                    
                                 }
-                            });
+
+
                            
-                        }
-                    else
-                        {
-                            sweetAlert("Oops", "Seleccione a un paciente ", "error");
-                            
-                        }
-
-
-                   
+                        };
                 };
-        };
 
         if (opcion === "opcion2") 
         {
@@ -643,7 +446,7 @@ function enviarCorreo_newEjercicio (datos,callback)
                                             swal
                                             ({   
                                                 title   : "!Bien! :)",   
-                                                text    : "Se ha asignado un nuevo ejercicio al paciente." + data.nombre,   
+                                                text    : "Se ha asignado un nuevo ejercicio al paciente. " + data.nombre,   
                                                 timer   : 2000,
                                                 type    : "success",  
                                                 showConfirmButton: false 
@@ -663,7 +466,7 @@ function enviarCorreo_newEjercicio (datos,callback)
 
                                 else
                                 {
-                                    swal("Error!", "No se ha podido guardar el ejercicio  de: " + id_Paciente.nombre, "error");
+                                    swal("Error!", "No se ha podido guardar el ejercicio "+ data.nombre_ejercicio +"  del paciente " + id_Paciente.nombre +", por que este ya tiene asociado un ejercicio de tipo: "+ data.tipo +" con el mismo nombre.", "error");
                                      limpiaCampos(campos);    
                                 }
                             });
@@ -725,6 +528,8 @@ function enviarCorreo_newEjercicio (datos,callback)
         }
 
         $("#TipoEjercicio").val("");
+        $("input:radio").attr("checked", false);
+        $('#Opciones').prop('selectedIndex',0);
 
     }
 

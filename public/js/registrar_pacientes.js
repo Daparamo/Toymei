@@ -1,6 +1,6 @@
 $(function()
 {
-    var resultadoBusca = []; //Gurda los usuarios que cumplen con el criterio de búsqueda...
+    var resultadoBusca = []; //Guarda los usuarios que cumplen con el criterio de búsqueda...
     listadoPersonas = [];
     var ind;
     traerPersonas();
