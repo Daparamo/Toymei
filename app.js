@@ -125,7 +125,7 @@ var express 		= 	require("express"),
 
 
 	//Mostrar Vista Reportes
-	app.get("/Reportes", rutas.Reportes);
+	//app.get("/Reportes", rutas.Reportes);
 
 
 
@@ -145,16 +145,16 @@ var express 		= 	require("express"),
 	app.post('/registroExiste', rutas.registroExiste);
 
 	//Traer la vista para editar ejercicios
-	app.get('/Editar_Ejercicios', rutas.vista_Editar_Ejercicios);
+	//app.get('/Editar_Ejercicios', rutas.vista_Editar_Ejercicios);
 
 
 	//Trae todos los ejercicios asignados por el medico
-	app.get('/traerEjercicios', rutas.traerEjercicios);
+	//app.get('/traerEjercicios', rutas.traerEjercicios);
 
 
 
 	//TraerPersona relacionadas con la cantidad de informes que cada uno tiene no importa que este sea malo o bueno
-	app.get('/traerPersonasxNoInformes', rutas.traerPersonasxNoInformes);
+//	app.get('/traerPersonasxNoInformes', rutas.traerPersonasxNoInformes);
 
 
 
@@ -168,7 +168,7 @@ var express 		= 	require("express"),
 
 
 	//Actualizar ejercicio
-	app.put('/updateEjercicio', rutas.updateEjercicio);
+//	app.put('/updateEjercicio', rutas.updateEjercicio);
 
 	
 
@@ -185,7 +185,7 @@ var express 		= 	require("express"),
 
 
 	//Eliminar de forma logica eun ejercicio del paciente
-	app.put('/eliminarEjercicio', rutas.eliminarEjercicio);
+//	app.put('/eliminarEjercicio', rutas.eliminarEjercicio);
 	
 
 
