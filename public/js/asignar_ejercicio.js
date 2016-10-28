@@ -1,10 +1,7 @@
 $(document).ready(function() {
         
           var delay = 700;
-          setTimeout(function(){  $(".se-pre-con").fadeOut('slow'); }, delay);
-    
-   
-
+          setTimeout(function(){  $(".se-pre-con").fadeOut('slow'); }, delay);    
     //En el select el valor "0" es para EJERCICIOS
     //En el select el valor "1" es para ESTIRAMIENTO
     var resultadoBusca = []; //Gurda los usuarios que cumplen con el criterio de búsqueda...
@@ -28,7 +25,7 @@ $(document).ready(function() {
         var txt = frame.contentWindow.document.document.getElementById('txt1').value;
         document.getElementById('txt2').value = txt;
 
-        console.log($('#txt2').val());
+        console.log("loooooool"+$('#txt2').val());
 
     });
 
@@ -117,13 +114,8 @@ $(document).ready(function() {
 		});
 	};
 
-   
-
-
 function traervistaCubos(callback)
  {        
-
-   
         $.ajax(
         {
             url         : "vista_cubos",
@@ -132,12 +124,11 @@ function traervistaCubos(callback)
             dataType    : "json",
             contentType: "application/json; charset=utf-8"
         })
-
     }
 
 
-    function traerPersonas (callback)
- {        
+function traerPersonas (callback)
+{        
 
     //console.log("Entro a traer los pacientes");
         $.ajax(
@@ -166,20 +157,6 @@ function traervistaCubos(callback)
         });
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   
     var guardaTodo = function()
     {
@@ -405,74 +382,77 @@ function seleccionoPaciente ()
 
 
     if (status) 
-        {
-            return ({
-                        status  : true,
-                        id      : id,
-                        nombre  : nombre,
-                        correo  : correo
-                    });
-        }
+    {
+        return ({
+                    status  : true,
+                    id      : id,
+                    nombre  : nombre,
+                    correo  : correo
+                });
+    }
     else
-        {
-            return ({
-                        status  : false,
-                        id      : "",
-                        nombre  : ""
-                    });;
-        }
+    {
+        return ({
+                    status  : false,
+                    id      : "",
+                    nombre  : ""
+                });;
+    }
 
 }
 
-
-
 function enviarEjercicio (coordenadas,tipo,id_paciente,callback) 
+{   
+    /*
+        var imagen = $("#cubos").contents().find("#imagen").val();
+        console.log(imagen);
+        window.open(imagen);
+    */
+    var data = {};
+
+    if (tipo === "ejercitar") 
     {
-        var data = {};
-
-        if (tipo === "ejercitar") 
-        {
-            data.id = id_paciente;
-            data.nombre_ejercicio = $('#NombreEjercicio').val();
-            data.tiempo = $('#tiempoEjercicio').val();
-            data.tipo = "ejercitar";
-            data.repeticiones = $('#repeticionesEjercicio').val();
-            data.coordenadas = coordenadas;
-        }
-        else
-        {
-            data.id = id_paciente;
-            data.nombre_ejercicio = $('#NombreEjercicio').val();
-            data.tiempo = $('#tiempoEjercicio').val();
-            data.tipo = "estiramiento";
-            data.repeticiones = 0;
-            data.coordenadas = coordenadas;
-
-        }
-
-        
-        $.ajax(
-        {
-            url         : "insertarEjercicio",
-            type        : "POST",
-            data        : JSON.stringify(data),
-            dataType    : "json",
-            contentType: "application/json; charset=utf-8"
-        }).done(function(data)
-        {
-            callback(data);
-            //console.log(data.status)
-
-        }).error(function(request, status, error)
-        {
-            
-
-            sweetAlert("Oops...", request.responseText, "error");
-            //alert(request.responseText);
-            window.location = "/";
-        });
-
+        data.id = id_paciente;
+        data.nombre_ejercicio = $('#NombreEjercicio').val();
+        data.tiempo = $('#tiempoEjercicio').val();
+        data.tipo = "ejercitar";
+        data.repeticiones = $('#repeticionesEjercicio').val();
+        data.coordenadas = coordenadas;        
     }
+    else
+    {
+        data.id = id_paciente;
+        data.nombre_ejercicio = $('#NombreEjercicio').val();
+        data.tiempo = $('#tiempoEjercicio').val();
+        data.tipo = "estiramiento";
+        data.repeticiones = 0;
+        data.coordenadas = coordenadas;        
+    }
+    console.log(data);
+    console.log(data.imagen);
+    console.log(data);
+    $.ajax(
+    {
+        url         : "insertarEjercicio",
+        type        : "POST",
+        data        : JSON.stringify(data),
+        dataType    : "json",
+        contentType: "application/json; charset=utf-8"
+    }).done(function(data)
+    {
+        callback(data);
+        //console.log(data.status)
+
+    }).error(function(request, status, error)
+    {
+        
+
+        sweetAlert("Oops...", request.responseText, "error");
+        //alert(request.responseText);
+        window.location = "/";
+    });
+
+}
 
 function enviarCorreo_newEjercicio (datos,callback) 
     {
@@ -505,191 +485,122 @@ function enviarCorreo_newEjercicio (datos,callback)
 
     }
 
-
-
-
-
-
-
-
-
-
     $('#guarda').click(function(event) 
     {
-
         var coordenadas = $("#cubos").contents().find("#Array_Cubos").val();
         console.log(coordenadas);
-
         var opcion = $('#Opciones').val();
-
-        
-        
-
         if (opcion !== null && opcion !=="")
-            {
-
-
-
-        if (opcion == "opcion1") 
         {
-            //console.log("ENTRO A EJERCICIO")
-            var enviaForm = true;       
-            var campos = ["NombreEjercicio", "tiempoEjercicio", "repeticionesEjercicio"];
-
-            for(var i = 0; i < campos.length; i++)
+            if (opcion == "opcion1") 
             {
-                if($("#" + campos[i]).val().length === 0)
+                //console.log("ENTRO A EJERCICIO")
+                var enviaForm = true;       
+                var campos = ["NombreEjercicio", "tiempoEjercicio", "repeticionesEjercicio"];
+                for(var i = 0; i < campos.length; i++)
                 {
-                    sweetAlert("Completar campos", "Por favor completa el campo " + campos[i], "error");
-                    enviaForm = false;
-                    break;
+                    if($("#" + campos[i]).val().length === 0)
+                    {
+                        sweetAlert("Completar campos", "Por favor completa el campo " + campos[i], "error");
+                        enviaForm = false;
+                        break;
+                    }
                 }
-            }
-
-            if (enviaForm) 
+                if (enviaForm) 
+                    {
+                        var id_Paciente = seleccionoPaciente();
+                       // console.log("Ha seleccionado paciente" + id_Paciente.id);
+                        if (id_Paciente.status) 
+                            {
+                                enviarEjercicio(coordenadas,"ejercitar",id_Paciente.id, function(data)
+                                {
+                                    if(data.status)
+                                    {   
+                                        enviarCorreo_newEjercicio({"nombre" : id_Paciente.nombre ,  "correo" : id_Paciente.correo, "tipo": "informar_paciente_new_ejercicio"}, function(data)
+                                        {
+                                            if(data.status)
+                                            {                                
+                                                swal
+                                                ({   
+                                                    title   : "!Bien! :)",   
+                                                    text    : "Se ha asignado un nuevo ejercicio al paciente." + data.nombre,   
+                                                    timer   : 2000,
+                                                    type    : "success",  
+                                                    showConfirmButton: false 
+                                                });                                
+                                                limpiaCampos(campos);                                                            
+                                            }
+                                            else                                        
+                                                swal("Error!", "No se ha podido enviar el email a: " + data.correo, "error");                                        
+                                        });                                 
+                                    }
+                                    else                            
+                                        swal("Error!", "No se ha podido guardar el ejercicio  de: " + id_Paciente.nombre, "error");                                
+                                });                           
+                            }
+                        else                    
+                            sweetAlert("Oops", "Seleccione a un paciente ", "error");                                               
+                    };
+            };            
+            if (opcion === "opcion2") 
+            {
+                //console.log("ENTRO A ESTIRAR")
+                var enviaForm = true;       
+                var campos = ["NombreEjercicio", "tiempoEjercicio"];
+                for(var i = 0; i < campos.length; i++)
                 {
-
+                    if($("#" + campos[i]).val().length === 0)
+                    {
+                        sweetAlert("Completar campos", "Por favor completa el campo " + campos[i], "error");
+                        enviaForm = false;
+                        break;
+                    }
+                }
+                if (enviaForm) 
+                {
                     var id_Paciente = seleccionoPaciente();
-
-                   // console.log("Ha seleccionado paciente" + id_Paciente.id);
-
+                    // console.log("Ha seleccionado paciente" + id_Paciente.id);
                     if (id_Paciente.status) 
+                    {
+                        enviarEjercicio(coordenadas,"estirar",id_Paciente.id, function(data)
                         {
-                            enviarEjercicio(coordenadas,"ejercitar",id_Paciente.id, function(data)
-                            {
-
-                                if(data.status)
-                                {   
-
-                                    enviarCorreo_newEjercicio({"nombre" : id_Paciente.nombre ,  "correo" : id_Paciente.correo, "tipo": "informar_paciente_new_ejercicio"}, function(data)
-                                    {
-
-                                        if(data.status)
-                                        {
-                                       
-                                            swal
-                                            ({   
-                                                title   : "!Bien! :)",   
-                                                text    : "Se ha asignado un nuevo ejercicio al paciente." + data.nombre,   
-                                                timer   : 2000,
-                                                type    : "success",  
-                                                showConfirmButton: false 
-                                            });
-                                
-                                            limpiaCampos(campos);    
-                                                           
-                                         }
-
-                                        else
-                                        {
-                                            swal("Error!", "No se ha podido enviar el email a: " + data.correo, "error");
-                                        }
-                                    }); 
-                                
-                                }
-
-                                else
+                            if(data.status)
+                            {                            
+                               enviarCorreo_newEjercicio({"nombre" : id_Paciente.nombre ,  "correo" : id_Paciente.correo, "tipo": "informar_paciente_new_ejercicio"}, function(data)
                                 {
-                                    swal("Error!", "No se ha podido guardar el ejercicio  de: " + id_Paciente.nombre, "error");
-                                }
-                            });
-                           
-                        }
-                    else
-                        {
-                            sweetAlert("Oops", "Seleccione a un paciente ", "error");
-                            
-                        }
-
-
-                   
+                                    if(data.status)
+                                    {                            
+                                        swal
+                                        ({   
+                                            title   : "!Bien! :)",   
+                                            text    : "Se ha asignado un nuevo ejercicio al paciente." + data.nombre,   
+                                            timer   : 2000,
+                                            type    : "success",  
+                                            showConfirmButton: false 
+                                        });                        
+                                        limpiaCampos(campos);                                                    
+                                    }
+                                    else
+                                    {
+                                        swal("Error!", "No se ha podido enviar el email a: " + data.correo, "error");
+                                         limpiaCampos(campos);    
+                                    }
+                                });                               
+                            }
+                            else
+                            {
+                                swal("Error!", "No se ha podido guardar el ejercicio  de: " + id_Paciente.nombre, "error");
+                                 limpiaCampos(campos);    
+                            }
+                        });                            
+                    }
+                    else                    
+                    sweetAlert("Oops", "Seleccione a un paciente ", "error");                    
                 };
-        };
-
-        if (opcion === "opcion2") 
-        {
-            //console.log("ENTRO A ESTIRAR")
-            var enviaForm = true;       
-            var campos = ["NombreEjercicio", "tiempoEjercicio"];
-            for(var i = 0; i < campos.length; i++)
-            {
-                if($("#" + campos[i]).val().length === 0)
-                {
-                    sweetAlert("Completar campos", "Por favor completa el campo " + campos[i], "error");
-                    enviaForm = false;
-                    break;
-                }
             }
-
-            if (enviaForm) 
-            {
-               var id_Paciente = seleccionoPaciente();
-
-              // console.log("Ha seleccionado paciente" + id_Paciente.id);
-                    if (id_Paciente.status) 
-                        {
-                            enviarEjercicio(coordenadas,"estirar",id_Paciente.id, function(data)
-                            {
-
-                                if(data.status)
-                                {
-                                   
-                                   enviarCorreo_newEjercicio({"nombre" : id_Paciente.nombre ,  "correo" : id_Paciente.correo, "tipo": "informar_paciente_new_ejercicio"}, function(data)
-                                    {
-
-                                        if(data.status)
-                                        {
-                                       
-                                            swal
-                                            ({   
-                                                title   : "!Bien! :)",   
-                                                text    : "Se ha asignado un nuevo ejercicio al paciente." + data.nombre,   
-                                                timer   : 2000,
-                                                type    : "success",  
-                                                showConfirmButton: false 
-                                            });
-                                
-                                            limpiaCampos(campos);    
-                                                           
-                                         }
-
-                                        else
-                                        {
-                                            swal("Error!", "No se ha podido enviar el email a: " + data.correo, "error");
-                                             limpiaCampos(campos);    
-                                        }
-                                    });                               
-                                }
-
-                                else
-                                {
-                                    swal("Error!", "No se ha podido guardar el ejercicio  de: " + id_Paciente.nombre, "error");
-                                     limpiaCampos(campos);    
-                                }
-                            });
-                            
-                        }
-                    else
-                        {
-                            sweetAlert("Oops", "Seleccione a un paciente ", "error");
-                            
-                        }
-                
-            };
-
         }
-    }
-        else
-        {
-           
+        else    
              sweetAlert("Completar campos", "Elija alguna opcion de ejercicio", "error");
-        }
-
-     
-       
-
-
-
     });
 
 
@@ -732,7 +643,7 @@ function enviarCorreo_newEjercicio (datos,callback)
     {
         return document.getElementById(div);
     }
-  
+    
 
    
 });

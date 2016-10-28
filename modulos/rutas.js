@@ -540,6 +540,7 @@ var traerEmailandPass = function(req, res)
 	//console.log("ID del recien registrado" + data.id)
 	//console.log("El correo es: " + data.correo);
 	var status;
+
 	var sql = "select nombre as nombre, apellido as apellido, correo as correo, password as password, id as id  from pacientes where eliminado = 0  and cedula = '"+(data.cedula)+"'";
 	//console.log(sql)
 	db.queryMysql(sql, function(err, response)
@@ -708,7 +709,7 @@ var crearUsuario = function(data, idusuario, callback)
 var insertarEjercicio = function (req,res)
 {
 	//se esta creando un ejercicio..
-	var data = req.body;
+	var data = req.body;	
 	if(req.isAuthenticated())
 	{
 		var status = true;
@@ -716,11 +717,8 @@ var insertarEjercicio = function (req,res)
 		var id_ejercicio = guid();
 		var fecha = fechaActual;
 		var id_medico = req.user[0].idusuario;
-		var termino = false;
-			
-		
-			
-			sql = "INSERT INTO ejercicio (id_ejercicio, id_paciente, id_medico, nombre_ejercicio, fecha_inicio, tiempo, tipo, repeticiones, termino, coordenadas) " +
+		var termino = false;					
+			sql = "INSERT INTO ejercicio (id_ejercicio, id_paciente, id_medico, nombre_ejercicio, fecha_inicio, tiempo, tipo, repeticiones, termino, coordenadas) " +//,imagen
 			  "VALUES ('" + id_ejercicio	         + "', '" + 
 			  				data.id          		 + "', " +
 			  		        id_medico      	 		 + ", '" +
@@ -730,12 +728,10 @@ var insertarEjercicio = function (req,res)
 			  		   		data.tipo	 + "', " + 
 			  		   		data.repeticiones	 	 + ", " +
 			  		   		termino	 	 + ", '" +
-			  		   		data.coordenadas        + "')";
+			  		   		data.coordenadas       + "');"; //+ ", '" +//
+							//data.imagen  + "');";
 
 		//console.log(sql);
-
-
-
 		db.queryMysql(sql, function(err, response)
 		{
 			//console.log(response.affectedRows);
