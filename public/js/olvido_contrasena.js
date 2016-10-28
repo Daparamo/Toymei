@@ -1,6 +1,6 @@
 $(document).ready(function() {
     
-    var delay = 1500;
+    var delay = 1000;
     setTimeout(function(){  $(".loading").fadeOut('slow'); }, delay);
 
    

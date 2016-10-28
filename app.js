@@ -123,6 +123,12 @@ var express 		= 	require("express"),
 	//Mostrar vista registrar pacientes
 	app.get("/Mostrar_vista_pacientes", rutas.vista_pacientes);
 
+
+	//Mostrar Vista Reportes
+	app.get("/Reportes", rutas.Reportes);
+
+
+
 	app.post('/createRegistro123', rutas.createRegistro);
 	//*************EJERCICIO********************
 	//Mostrar Vista AsignarEjercicio
@@ -136,11 +142,19 @@ var express 		= 	require("express"),
 
 
 	//Validar que un medico no exista en la base de datos
-	
-
 	app.post('/registroExiste', rutas.registroExiste);
 
+	//Traer la vista para editar ejercicios
+	app.get('/Editar_Ejercicios', rutas.vista_Editar_Ejercicios);
 
+
+	//Trae todos los ejercicios asignados por el medico
+	app.get('/traerEjercicios', rutas.traerEjercicios);
+
+
+
+	//TraerPersona relacionadas con la cantidad de informes que cada uno tiene no importa que este sea malo o bueno
+	app.get('/traerPersonasxNoInformes', rutas.traerPersonasxNoInformes);
 
 
 
@@ -153,6 +167,12 @@ var express 		= 	require("express"),
 	app.put('/updateUsuario', rutas.updateRegistro);
 
 
+	//Actualizar ejercicio
+	app.put('/updateEjercicio', rutas.updateEjercicio);
+
+	
+
+
 	app.get('/traerDatos_Medico', rutas.traerDatos_Medico);
 
 
@@ -163,15 +183,17 @@ var express 		= 	require("express"),
 	//Eliminar de forma logica el registro de un paciente
 	app.put('/eliminarUsuario', rutas.eliminarUsuario);
 
-	//Eliminar una tarea..
-	app.delete('/deleteTask/:id', rutas.deleteTask);
-	//Mostrar sólo una tarea...
-	app.get('/getTask/:id', rutas.getTask);
-	//Para realizar el envío de un email..
+
+	//Eliminar de forma logica eun ejercicio del paciente
+	app.put('/eliminarEjercicio', rutas.eliminarEjercicio);
 	
+
+
+
 	app.post('/mail', function (req, res, next)
 	{	
-		var data = req.body;	
+		var data = req.body;
+		var medico = req.user[0].nombre;	
 		
 		if (data.tipo === "cambiar_contrasena")
 		 {
@@ -201,6 +223,36 @@ var express 		= 	require("express"),
 				});
 			});
 		 };
+
+		 if (data.tipo === "informar_pacienteEliminadoEjercicio")
+		 {
+			var txtMsg = "Cordial saludo " + data.nombre + ", tu fisoterapeuta " + medico +" ha eliminado un ejercicio recientemente. !Un ejercicio menos :)!"; 
+			console.log(txtMsg);
+			app.mailer.send('mail',
+			{
+				to: data.correo,
+				subject: 'ToyMei - Informe Ejercicio eliminado',
+				text: txtMsg
+			},
+			function (err)
+			{
+				if (err)
+				{
+					res.json
+				({
+				  status  : false,
+				  correo  : data.correo
+				});
+					return;
+		    	}
+				res.json
+				({
+				  status  : true,
+				  correo  : data.correo
+				});
+			});
+		 };
+
 
 
 		 if (data.tipo === "informar_paciente_new_ejercicio")
@@ -336,11 +388,6 @@ var express 		= 	require("express"),
 			});
 		}
 	});
-
-
-
-
-
 
 	//Para cualquier url que no cumpla la condición...
 	app.get("*", rutas.notFound404);
